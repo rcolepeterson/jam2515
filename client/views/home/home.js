@@ -31,6 +31,15 @@ Template.Home.created = function () {
 };
 
 Template.Home.rendered = function () {
+  //confirmation msg.
+    // Session.set('sAlert', {
+    //     message: 'Lets do it!',
+    //     position: 'left-bottom'
+    // });
+
+    console.log("we have home", Session.get('sAlert'));
+
+    sAlert.error('Boom! Something went wrong!', {effect: 'genie', position: 'right-bottom', timeout: 'no'});
 };
 
 Template.Home.destroyed = function () {

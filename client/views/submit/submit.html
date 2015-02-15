@@ -1,7 +1,7 @@
 <template name="Submit">
     <div class="container submit">
         <div id="searchForm" class="centerMe">
-            <label for="searchInput">Search for a video. <small>(type and hit enter)</small>
+            <label for="searchInput">Search for your JAM to submit.
             </label>
             <input id="searchInput" name="searchInput" type="text" placeholder="Artist Name" autofocus="true">
         </div>
@@ -13,12 +13,29 @@
         <div id="results" class="row thumbnailHolder">
             {{#each foosItems}} {{>utubeItem}} {{/each}}
         </div>
+
+        <div id="submitForm" class="row centerMe">
+        
+            <div class="thumbnail">
+                <img src="{{selThumbImg}}" class="img-responsive">
+                <div class="caption">
+                    <h4>{{selTitle}}</h4>
+                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                    <h3>Is this your Jam?</h3>
+                    <p><a href="#" class="btn btn-primary submitFormBtn" role="button">Yes</a> 
+                    <a class="btn btn-default submitFormBtnCancel" role="button">No</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+
     </div>
 </template>
 
 <template name="utubeItem">
     <div class="col-lg-3 col-md-4 col-xs-12">
-        <a class="thumbnail" href="#" data-id="{{_id}}" target="_blank">
+        <a class="thumbnail" data-id="{{_id}}" target="_blank">
             <img class="img-responsive" src="{{data.thumbnail.hqDefault}}">
         </a>
     </div>

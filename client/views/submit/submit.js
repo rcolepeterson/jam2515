@@ -2,12 +2,36 @@
 /* Submit: Event Handlers and Helpersss .js*/
 /*****************************************************************************/
 Template.Submit.events({
-    'click .thumbnail': function(e, tmpl) {
 
-        console.log('we have a submission');
-        var id = $( e.currentTarget ).data( "id");
-        var obj = foos.findOne( {_id:id});
-        data = obj.data;
+    //display submit form by running GSAP timeline sequence
+    'click #results .thumbnail': function(e, tmpl) {
+
+        //get id from DOM.
+        var id = $(e.currentTarget).data("id");
+        //get document from Collection.
+        var obj = foos.findOne({
+            _id: id
+        });
+        var data = obj.data;
+        //  debugger;
+        tmpl.state.set('selId', id);
+        tmpl.state.set('selThumbImg', data.thumbnail.hqDefault);
+        tmpl.state.set('selTitle', data.title);
+        tlSubmit.play();
+    },
+    //hide submit form by reversing GSAP timeline sequence
+    'click .submitFormBtnCancel': function(e, tmpl) {
+        tlSubmit.reverse();
+    },
+    //submit. insert in DB.
+    'click .submitFormBtn': function(e, tmpl) {
+        console.log('we have submitted');
+        var id = tmpl.state.get('selId');
+        var obj = foos.findOne({
+            _id: id
+        });
+        //debugger;
+        var data = obj.data;
         //debugger;
         var empty = "";
         //var link = tmpl.find('#urlinput').value;
@@ -18,10 +42,12 @@ Template.Submit.events({
 
         submitPost = function() {
 
-             if (!Meteor.user()) {
-                Session.set('sAlert', {
-                    message: 'You must be logged in to post a video',
-                    position: 'left-bottom'
+            if (!Meteor.user()) {
+
+                sAlert.error('Boom! You must be logged in to post a video!', {
+                    effect: 'genie',
+                    position: 'right-bottom',
+                    timeout: 'no'
                 });
                 return;
             }
@@ -41,23 +67,27 @@ Template.Submit.events({
                 created_at: new Date(),
                 ownerId: userId,
                 authorImage: postAuthorImage,
-                videoId:data.id,
+                videoId: data.id,
                 //url: link,
                 //name: name,
                 email: email,
                 //tag: tag,
                 postImage: data.thumbnail.hqDefault,
                 postDesc: data.description,
-                postTitle:  data.title,
+                postTitle: data.title,
                 like: 0,
                 postviews: 0
             });
 
-            //confirmation msg.
-            Session.set('sAlert', {
-                message: 'Your post has been submitted! Great post name BTW.',
-                position: 'left-bottom'
-            });
+            console.log('we have submitted VideoID', VideoID);
+
+            sAlert.success('Boom! Your post has been submitted! Great post name BTW.', {
+                    effect: 'genie',
+                    position: 'right-bottom',
+                    timeout: 'no'
+                });
+
+            tlSubmit.reverse();
 
         };
 
@@ -73,7 +103,7 @@ Template.Submit.helpers({
      *    return Items.find();
      *  }
      */
-    foosItems:function(){
+    foosItems: function() {
         return foos.find();
     }
 });
@@ -82,25 +112,46 @@ Template.Submit.helpers({
 /* Submit: Lifecycle Hooks */
 /*****************************************************************************/
 Template.Submit.created = function() {
-    
+
+    //create reactive dictionay to hold sel youtube data for display and submission
+    this.state = new ReactiveDict();
+    this.state.set('selThumbImg', '');
+    this.state.set('selTitle', '');
+
+
+
 };
+
+Template.Submit.helpers({
+    selId: function() {
+        return Template.instance().state.get('selId');
+    },
+    selThumbImg: function() {
+        return Template.instance().state.get('selThumbImg');
+    },
+    selTitle: function() {
+        return Template.instance().state.get('selTitle');
+    }
+});
 
 Template.Submit.rendered = function() {
     init();
 };
 
 Template.Submit.destroyed = function() {};
-foos = new Meteor.Collection( null );
+foos = new Meteor.Collection(null);
+var tlSubmit;
 var init = function() {
 
     "use strict";
 
     var $input = $('#searchInput'),
         $loader = $('#loader'),
-        //$results = $('#results'),
+        $results = $('#results'),
         $formAsset = $('#searchForm').children(),
         $close = $('.fa-close'),
         $thumbs = '.thumb',
+        $submitForm = $('#submitForm'),
         videoItems = [];
 
     //center assets. takes care of vendor prefixes.
@@ -158,6 +209,24 @@ var init = function() {
             delay: .75
         }));
 
+    /*****************************************************************/
+    /*************  SUBMIT TM   8*************************************/
+    /*****************************************************************/
+    //
+    tlSubmit = new TimelineLite({
+            paused: true,
+            onStart: function() {
+                //TweenMax.set()
+            }
+        })
+        .add(TweenMax.to($results, .25, {
+            opacity: .2
+        }))
+        .add(TweenMax.from($submitForm, .5, {
+            ease: Back.easeOut,
+            scale: 0
+        }));
+
     //event handlers.
     $input.keyup(function(event) {
         event.preventDefault();
@@ -173,6 +242,9 @@ var init = function() {
         $input.val('').focus();
         tl.restart();
     });
+
+
+
 
     //init API.
     function searchForVideo() {
@@ -200,24 +272,17 @@ var init = function() {
         //$results.empty();
         if (videoItems) {
 
-
-// for ( var i = 0; i < 100; i++ ) {
-//   foos.insert({ num: i });
-// }
-// foos.findOne( {} ).num; // => 0
-// var f = foos.findOne( {}, { sort: [[ "num", "desc" ]] } ).num; // => 99
-// console.log('f',f);
-
             var length = videoItems.length;
-            
+
             $.each(videoItems, function(i, data) {
-                foos.insert({ data: data });
+                foos.insert({
+                    data: data
+                });
                 if ((length - 1) === i) {
                     tl.play();
                 }
             });
         } else {
-            //$results.prepend('<div class="thumb">No videos found.</div></div>');
             tl.play();
         }
     }
