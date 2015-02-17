@@ -3,30 +3,34 @@
 /*****************************************************************************/
 Template.Submit.events({
 
-    //display submit form by running GSAP timeline sequence
-    'click #results .thumbnail': function(e, tmpl) {
+    // //display submit form by running GSAP timeline sequence
+    // 'click #results .thumbnail': function(e, tmpl) {
 
-        //get id from DOM.
-        var id = $(e.currentTarget).data("id");
-        //get document from Collection.
-        var obj = foos.findOne({
-            _id: id
-        });
-        var data = obj.data;
-        //  debugger;
-        tmpl.state.set('selId', id);
-        tmpl.state.set('selThumbImg', data.thumbnail.hqDefault);
-        tmpl.state.set('selTitle', data.title);
-        tlSubmit.play();
-    },
-    //hide submit form by reversing GSAP timeline sequence
-    'click .submitFormBtnCancel': function(e, tmpl) {
-        tlSubmit.reverse();
-    },
+    //     //get id from DOM.
+    //     var id = $(e.currentTarget).data("id");
+    //     //get document from Collection.
+    //     var obj = foos.findOne({
+    //         _id: id
+    //     });
+    //     var data = obj.data;
+    //     //  debugger;
+    //     //set all the currently selected video facts on the reactiveDict;
+    //     tmpl.state.set('selId', id);
+    //     tmpl.state.set('selThumbImg', data.thumbnail.hqDefault);
+    //     tmpl.state.set('selTitle', data.title);
+    //     console.log('data.description', data.description);
+    //     tmpl.state.set('selDesc', data.description);
+    //     tlSubmit.play();
+    // },
+    // //hide submit form by reversing GSAP timeline sequence
+    // 'click .submitFormBtnCancel': function(e, tmpl) {
+    //     tlSubmit.reverse();
+    // },
     //submit. insert in DB.
     'click .submitFormBtn': function(e, tmpl) {
-        console.log('we have submitted');
-        var id = tmpl.state.get('selId');
+
+        // var id = tmpl.state.get('selId');
+        var id = $(e.currentTarget).data("id");
         var obj = foos.findOne({
             _id: id
         });
@@ -47,7 +51,7 @@ Template.Submit.events({
                 sAlert.error('Boom! You must be logged in to post a video!', {
                     effect: 'genie',
                     position: 'right-bottom',
-                    timeout: 'no'
+                    timeout: 3000
                 });
                 return;
             }
@@ -82,12 +86,19 @@ Template.Submit.events({
             console.log('we have submitted VideoID', VideoID);
 
             sAlert.success('Boom! Your post has been submitted! Great post name BTW.', {
-                    effect: 'genie',
-                    position: 'right-bottom',
-                    timeout: 'no'
-                });
+                effect: 'genie',
+                position: 'right-bottom',
+                timeout: 'no'
+            });
 
             tlSubmit.reverse();
+
+            //redirect to post.
+            Router.go('videodetail', {
+                _id: VideoID
+            });
+
+
 
         };
 
@@ -131,6 +142,9 @@ Template.Submit.helpers({
     },
     selTitle: function() {
         return Template.instance().state.get('selTitle');
+    },
+    selDesc: function() {
+        return Template.instance().state.get('selDesc');
     }
 });
 
@@ -138,7 +152,10 @@ Template.Submit.rendered = function() {
     init();
 };
 
-Template.Submit.destroyed = function() {};
+Template.Submit.destroyed = function() {
+    if (foos)
+        foos.remove({});
+};
 foos = new Meteor.Collection(null);
 var tlSubmit;
 var init = function() {
@@ -146,6 +163,7 @@ var init = function() {
     "use strict";
 
     var $input = $('#searchInput'),
+        $searchVideoBtn = $('.searchVideoBtn'),
         $loader = $('#loader'),
         $results = $('#results'),
         $formAsset = $('#searchForm').children(),
@@ -166,7 +184,11 @@ var init = function() {
             onStart: function() {
                 TweenMax.set(".centerMe", {
                     display: 'block'
-                })
+                });
+                $input.val('').focus();
+
+                if (foos)
+                    foos.remove({});
             }
         })
         //move search label and input on the screen and pause operation.
@@ -220,7 +242,7 @@ var init = function() {
             }
         })
         .add(TweenMax.to($results, .25, {
-            opacity: .2
+            display: 'none'
         }))
         .add(TweenMax.from($submitForm, .5, {
             ease: Back.easeOut,
@@ -237,9 +259,14 @@ var init = function() {
         }
     });
 
+
+    $searchVideoBtn.on('click', function() {
+        $input.blur();
+        //start timeline here!
+        tl.play();
+    });
+
     $close.on('click', function() {
-        //$results.empty();
-        $input.val('').focus();
         tl.restart();
     });
 
@@ -254,6 +281,7 @@ var init = function() {
     //Callback. Define items and continue sequence.
     function onSearchForVideoResults(result) {
         videoItems = result.data.items;
+        // TweenMax.set($results, {display: 'block'});
         tl.resume();
     }
 

@@ -1,26 +1,37 @@
 <template name="Submit">
+
+
+
+
+
+
     <div class="container submit">
+        <div class="row"><a><i class="fa fa-close fa-3x pull-right"></i></a>
+        </div>
         <div id="searchForm" class="centerMe">
-            <label for="searchInput">Search for your JAM to submit.
+            <label for="searchInput">Search for a video to submit.
             </label>
             <input id="searchInput" name="searchInput" type="text" placeholder="Artist Name" autofocus="true">
+            <br>
+            <a href="#" class="btn btn-default pull-right searchVideoBtn" role="button">Submit</a> 
         </div>
         <div id="loader" class="centerMe"><i class="fa fa-5x fa-refresh fa-spin"></i>
         </div>
         <br>
-        <div class="row"><a><i class="fa fa-close fa-3x pull-right"></i></a>
-        </div>
+        
         <div id="results" class="row thumbnailHolder">
             {{#each foosItems}} {{>utubeItem}} {{/each}}
         </div>
 
-        <div id="submitForm" class="row centerMe">
-        
+    </div>
+
+ <!-- <nav class="navbar-fixed-top"> -->
+ <div id="submitForm" class="row centerMe">
             <div class="thumbnail">
                 <img src="{{selThumbImg}}" class="img-responsive">
                 <div class="caption">
                     <h4>{{selTitle}}</h4>
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                    <!-- <p>{{selDesc}}</p> -->
                     <h3>Is this your Jam?</h3>
                     <p><a href="#" class="btn btn-primary submitFormBtn" role="button">Yes</a> 
                     <a class="btn btn-default submitFormBtnCancel" role="button">No</a>
@@ -28,15 +39,27 @@
                 </div>
             </div>
         </div>
-        
 
-    </div>
+<!--  </nav> -->
 </template>
 
 <template name="utubeItem">
-    <div class="col-lg-3 col-md-4 col-xs-12">
-        <a class="thumbnail" data-id="{{_id}}" target="_blank">
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 youtubeItem">
+        <div class="thumbnail">
             <img class="img-responsive" src="{{data.thumbnail.hqDefault}}">
-        </a>
+        </div>
+        <div class="caption">
+         <h4 class="title">{{data.title}}</h4>
+         <p class="desc">{{data.description}}</p>
+         <p>
+            <a href="#" data-id="{{_id}}" class="btn btn-primary submitFormBtn" role="button">
+               Submit
+            </a> 
+           <!--  <a href="#" class="btn btn-default" role="button">
+               Button
+            </a> -->
+         </p>
+      </div>
+      <div>&nbsp;</div>
     </div>
 </template>

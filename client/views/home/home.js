@@ -31,15 +31,17 @@ Template.Home.created = function () {
 };
 
 Template.Home.rendered = function () {
-  //confirmation msg.
-    // Session.set('sAlert', {
-    //     message: 'Lets do it!',
-    //     position: 'left-bottom'
-    // });
 
-    console.log("we have home", Session.get('sAlert'));
+    console.log("we have home");
+    //center assets. takes care of vendor prefixes.
+    TweenMax.set(".centerMe", {
+        xPercent: -50,
+        yPercent: -50
+    });
 
-    sAlert.error('Boom! Something went wrong!', {effect: 'genie', position: 'right-bottom', timeout: 'no'});
+
+
+    //sAlert.error('Boom! Something went wrong!', {effect: 'genie', position: 'right-bottom', timeout: 'no'});
 };
 
 Template.Home.destroyed = function () {

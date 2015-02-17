@@ -23,9 +23,24 @@ Template.Videodetail.helpers({
 /* Videodetail: Lifecycle Hooks */
 /*****************************************************************************/
 Template.Videodetail.created = function() {
+    var id = Router.current().params._id || "LdH1hSWGFGU";
+    var obj = Videos.findOne({
+        _id: id
+    });
 
-    console.log('get video ' + Router.current().params._id);
-    var videoId = Router.current().params._id || "LdH1hSWGFGU";
+    if (!obj) {
+
+        sAlert.error('Boom! Something went wrong! Missing JAM', {
+            effect: 'genie',
+            position: 'right-bottom',
+            timeout: 'no'
+        });
+        return
+    }
+
+    //debugger;
+
+    var videoId = obj.videoId;
     var me = this;
 
     // YouTube API will call onYouTubeIframeAPIReady() when API ready.
@@ -38,15 +53,14 @@ Template.Videodetail.created = function() {
 
             height: "400",
             width: "600",
-
+            playerVars: { 'modestbranding': 1, 'controls': 1,'autohide':0  },
             // videoId is the "v" in URL (ex: http://www.youtube.com/watch?v=LdH1hSWGFGU, videoId = "LdH1hSWGFGU")
-            videoId: Router.current().params._id,
+            videoId: videoId,
 
             // Events like ready, state change, 
             events: {
 
                 onReady: function(event) {
-
                     // Play video when player ready.
                     event.target.playVideo();
                 }

@@ -4,11 +4,11 @@
 
 html, body {
     width: 100%;
-   /* font-family: 'Open Sans', sans-serif;*/
-    
-     background-color: #800080;
+    /* font-family: 'Open Sans', sans-serif;
+    //font-family: Lora, "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+    font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
+    background-color: #800080;
     color: #ccc;
-    
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
@@ -21,7 +21,6 @@ ul {
 /* global helper classes*/
 
 .centerMe {
-    display: none;
     position: absolute;
     left: 50%;
     top: 50%;

@@ -20,7 +20,7 @@ Router.route('/submit', {
 Router.route('/videos', {
     name: 'videos'
 });
-//Router.route('/videodetail', {name: 'videodetail'});
+
 Router.route('/videodetail/:_id', {
     name: 'videodetail',
     //template: 'PostIndex',

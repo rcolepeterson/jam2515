@@ -1,5 +1,7 @@
 <template name="Videos">
     <div class="container videos">
+        <h2 class="text-center"> VIDEOS </h2>
+        <div class="row">&nbsp;</div>
         <div class="row">
             {{#each videos}} {{>videoItem}} {{/each}}
         </div>
@@ -8,11 +10,8 @@
 
 <template name="videoItem">
     <div class="col-lg-3 col-md-4 col-xs-12 thumb">
-        <a class="thumbnail" href="/videodetail/{{videoId}}">
+        <a class="thumbnail" href="/videodetail/{{_id}}">
             <img class="img-responsive" src="{{postImage}}" alt="">
         </a>
     </div>
 </template>
-
-
-

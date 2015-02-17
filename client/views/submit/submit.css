@@ -19,3 +19,30 @@
     font-size: 5em;
     border-radius: 0;
 }
+
+#searchForm.centerMe{
+    display:none;
+}
+#submitForm{
+    display: none;
+    margin-top: 100px;
+}
+
+.youtubeItem{
+   height:460px
+}
+.title{
+ /*text-overflow:ellipsis;
+  white-space:nowrap;
+  overflow: hidden;*/
+
+}
+
+.desc{
+ /*text-overflow:ellipsis;
+  white-space:nowrap;
+  overflow: hidden;
+  height:43px;*/
+
+}
+
