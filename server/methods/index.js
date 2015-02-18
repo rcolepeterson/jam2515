@@ -3,3 +3,9 @@ Meteor.methods({
         return Videos.remove({});
     }
 });
+
+Meteor.methods({
+    removeAllSongofthedayVideos: function() {
+        return Songoftheday.remove({});
+    }
+});

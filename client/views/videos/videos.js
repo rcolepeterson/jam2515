@@ -2,12 +2,25 @@
 /* Videos: Event Handlers and Helpersss .js*/
 /*****************************************************************************/
 Template.Videos.events({
-  /*
-   * Example:
-   *  'click .selector': function (e, tmpl) {
-   *
-   *  }
-   */
+    'click .sodBtn': function(e, tmpl) {
+
+        var m = Meteor.user();
+        if (!m || m.emails[0].address !== 'colep@zaaz.com') {
+
+            sAlert.error('Boom! You must be an admin select a video of the day!', {
+                effect: 'genie',
+                position: 'right-bottom',
+                timeout: 3000
+            });
+            return;
+        }
+
+
+        Songoftheday.insert({
+            video: this,
+            created_at: new Date()
+        });
+    }
 });
 
 Template.Videos.helpers({
@@ -16,12 +29,9 @@ Template.Videos.helpers({
         var filterByTag = {};
         if (sessiontag) {
             filterByTag = Session.get("tag");
-            //console.log("sessiontag.tag " + sessiontag.tag);
             if (sessiontag.tag === 'All') {
                 filterByTag = {};
             }
-            //console.log("filterByTag " + filterByTag);
-            //console.log('Session sort order' + Session.get("sort_order"))
         }
         return Videos.find(filterByTag, {
             sort: Session.get("sort_order")
@@ -38,13 +48,27 @@ Template.Videos.helpers({
         var yyyy = today.getFullYear();
         return monthNames[mm] + " " + dd;
     }
+
 });
+
+Template.VideoItem.helpers({
+    isAdmin: function()
+    {
+        console.log(Meteor.user(), Meteor.user().emails[0].address);
+        if (Meteor.user() && Meteor.user().emails[0].address === 'colep@zaaz.com') {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+});
+
 
 /*****************************************************************************/
 /* Videos: Lifecycle Hooks */
 /*****************************************************************************/
-Template.Videos.created = function () {
-};
+Template.Videos.created = function() {};
 
 Template.Videos.rendered = function() {
     if (Session.get("sort_order") === undefined) {
@@ -54,5 +78,4 @@ Template.Videos.rendered = function() {
     }
 };
 
-Template.Videos.destroyed = function () {
-};
+Template.Videos.destroyed = function() {};
