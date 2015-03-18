@@ -2,22 +2,48 @@
 /* Videodetail: Event Handlers and Helpersss .js*/
 /*****************************************************************************/
 Template.Videodetail.events({
-    /*
-     * Example:
-     *  'click .selector': function (e, tmpl) {
-     *
-     *  }
-     */
+    'click .btn-like': function(e, tmpl) {
+        Videos.update({
+            _id: this._id
+        }, {
+            $inc: {
+                like: 1
+            }
+        });
+    }
 });
 
 Template.Videodetail.helpers({
-    /*
-     * Example:
-     *  items: function () {
-     *    return Items.find();
-     *  }
-     */
+    //Example:
+    videoitem: function() {
+        var id = Router.current().params._id || "LdH1hSWGFGU";
+        var obj = Videos.findOne({
+            _id: id
+        });
+        return obj;
+    }
+
 });
+
+// function getNextVideo() {
+//     var upcoming_games = Videos.find({
+//     }, {
+//         sort: {
+//             hype: -1,
+//             submitted: 1
+//         },
+//         limit: 10
+//     }).fetch();
+
+//     var upcoming_games_modified = upcoming_games;
+
+//     upcoming_games.forEach(function(game, index) {
+//         if (game._id === current_game_id)
+//             upcoming_games = upcoming_games_modified.splice(index);
+//     });
+
+//     return upcoming_games[skip + 1]._id;
+// }
 
 /*****************************************************************************/
 /* Videodetail: Lifecycle Hooks */
@@ -27,6 +53,8 @@ Template.Videodetail.created = function() {
     var obj = Videos.findOne({
         _id: id
     });
+
+    // debugger;
 
     if (!obj) {
 
@@ -53,7 +81,11 @@ Template.Videodetail.created = function() {
 
             height: "400",
             width: "600",
-            playerVars: { 'modestbranding': 1, 'controls': 1,'autohide':0  },
+            playerVars: {
+                'modestbranding': 1,
+                'controls': 1,
+                'autohide': 0
+            },
             // videoId is the "v" in URL (ex: http://www.youtube.com/watch?v=LdH1hSWGFGU, videoId = "LdH1hSWGFGU")
             videoId: videoId,
 
@@ -76,9 +108,15 @@ Template.Videodetail.created = function() {
 
 Template.Videodetail.rendered = function() {
 
-
+    $('.videoInfo .s-alert-close').on('click', function() {
+        $('.videoInfo').css('display', 'none');
+    })
 
 
 };
 
-Template.Videodetail.destroyed = function() {};
+Template.Videodetail.destroyed = function() {
+
+    sAlert.closeAll();
+
+};

@@ -1,7 +1,6 @@
 /*****************************************************************************/
 /* Submit: Style */
 /*****************************************************************************/
-
 .submit .thumb {
     opacity: 0;
 }
@@ -27,22 +26,3 @@
     display: none;
     margin-top: 100px;
 }
-
-.youtubeItem{
-   height:460px
-}
-.title{
- /*text-overflow:ellipsis;
-  white-space:nowrap;
-  overflow: hidden;*/
-
-}
-
-.desc{
- /*text-overflow:ellipsis;
-  white-space:nowrap;
-  overflow: hidden;
-  height:43px;*/
-
-}
-

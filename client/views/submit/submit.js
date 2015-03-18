@@ -2,38 +2,11 @@
 /* Submit: Event Handlers and Helpersss .js*/
 /*****************************************************************************/
 Template.Submit.events({
-
-    // //display submit form by running GSAP timeline sequence
-    // 'click #results .thumbnail': function(e, tmpl) {
-
-    //     //get id from DOM.
-    //     var id = $(e.currentTarget).data("id");
-    //     //get document from Collection.
-    //     var obj = foos.findOne({
-    //         _id: id
-    //     });
-    //     var data = obj.data;
-    //     //  debugger;
-    //     //set all the currently selected video facts on the reactiveDict;
-    //     tmpl.state.set('selId', id);
-    //     tmpl.state.set('selThumbImg', data.thumbnail.hqDefault);
-    //     tmpl.state.set('selTitle', data.title);
-    //     console.log('data.description', data.description);
-    //     tmpl.state.set('selDesc', data.description);
-    //     tlSubmit.play();
-    // },
-    // //hide submit form by reversing GSAP timeline sequence
-    // 'click .submitFormBtnCancel': function(e, tmpl) {
-    //     tlSubmit.reverse();
-    // },
-    //submit. insert in DB.
     'click .submitFormBtn': function(e, tmpl) {
 
         // var id = tmpl.state.get('selId');
         var id = $(e.currentTarget).data("id");
-        var obj = foos.findOne({
-            _id: id
-        });
+        var obj = foos.findOne({_id: id});
         //debugger;
         var data = obj.data;
         //debugger;
@@ -85,15 +58,15 @@ Template.Submit.events({
 
             console.log('we have submitted VideoID', VideoID);
 
-            sAlert.success('Boom! Your post has been submitted! Great post name BTW.', {
-                effect: 'genie',
-                position: 'right-bottom',
-                timeout: 'no'
-            });
+            // sAlert.success('Boom! Your post has been submitted! Great post name BTW.', {
+            //     effect: 'genie',
+            //     position: 'right-bottom',
+            //     timeout: 'no'
+            // });
 
-            tlSubmit.reverse();
+            //tlSubmit.reverse();
 
-            //redirect to post.
+           // redirect to post.
             Router.go('videodetail', {
                 _id: VideoID
             });
@@ -108,12 +81,6 @@ Template.Submit.events({
 });
 
 Template.Submit.helpers({
-    /*
-     * Example:
-     *  items: function () {
-     *    return Items.find();
-     *  }
-     */
     foosItems: function() {
         return foos.find();
     }
@@ -270,9 +237,6 @@ var init = function() {
         tl.restart();
     });
 
-
-
-
     //init API.
     function searchForVideo() {
         $.youtubeAPI($input.val(), onSearchForVideoResults)
@@ -299,13 +263,9 @@ var init = function() {
     function addResultsUI() {
         //$results.empty();
         if (videoItems) {
-
             var length = videoItems.length;
-
             $.each(videoItems, function(i, data) {
-                foos.insert({
-                    data: data
-                });
+                foos.insert({data: data});
                 if ((length - 1) === i) {
                     tl.play();
                 }

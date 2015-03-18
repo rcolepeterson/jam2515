@@ -1,3 +1,38 @@
 /*****************************************************************************/
 /* Videos: Style */
 /*****************************************************************************/
+
+.thumb {
+    margin-bottom: 20px;
+}
+.thumbnail {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border: 0;
+    border-radius: 0;
+    background-color: #fff;
+}
+.userInfo, .social {
+    background-color: #fff;
+    padding: 10px;
+    height: 70px;
+}
+.userInfo img {
+    margin-right: 10px;
+}
+
+.social{
+	height:60px;
+    margin-top: -1px;
+}
+.social .like{
+	margin-left: 6px;
+}
+
+.title {
+    max-width: 180px;
+    float: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

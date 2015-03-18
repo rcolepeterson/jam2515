@@ -15,13 +15,25 @@ Template.Videos.events({
             return;
         }
 
-
         Songoftheday.insert({
             video: this,
             created_at: new Date()
         });
+    },
+
+    'click .btn-like': function(e, tmpl) {
+        Videos.update({
+            _id: this._id
+        }, {
+            $inc: {
+                like: 1
+            }
+        });
     }
 });
+
+
+
 
 Template.Videos.helpers({
     videos: function() {
@@ -52,12 +64,19 @@ Template.Videos.helpers({
 });
 
 Template.VideoItem.helpers({
-    isAdmin: function()
-    {
-        console.log(Meteor.user(), Meteor.user().emails[0].address);
+    isAdmin: function() {
+        if (!Meteor) {
+            return;
+        }
+
+        if (!Meteor.user().emails) {
+            return;
+        }
+
+        //console.log(Meteor.user(), Meteor.user().emails[0].address);
         if (Meteor.user() && Meteor.user().emails[0].address === 'colep@zaaz.com') {
             return true;
-        }else{
+        } else {
             return false;
         }
     }

@@ -1,6 +1,6 @@
 <template name="Videos">
     <div class="container videos">
-        <h2 class="text-center"> VIDEOS </h2>
+        <h2 class="text-center"> JAMS </h2>
         <div class="row">&nbsp;</div>
         <div class="row">
             {{#each videos}} {{>VideoItem}} {{/each}}
@@ -9,10 +9,22 @@
 </template>
 
 <template name="VideoItem">
-    <div class="col-lg-3 col-md-4 col-xs-12 thumb">
+    <div class="col-sm-4 col-lg-3 col-md-4 thumb">
         <a class="thumbnail" href="/videodetail/{{_id}}">
             <img class="img-responsive" src="{{postImage}}" alt="">
         </a>
+        <div class="userInfo">
+            <img class="img-responsive img-circle pull-left" src="{{authorImage}}" alt="">
+            <span class="title text-ellpise">{{postTitle}}</span>
+            <br>by {{email}}
+            <br>
+        </div>
+        <div class="social">
+            <button type="button" class="btn btn-default btn-like" aria-label="Left Align">
+                <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <span class="like">{{like}}</span>
+            </button>
+        </div>
         {{#if isAdmin}}
         <button class="btn sodBtn">sod</button>
         {{/if}}

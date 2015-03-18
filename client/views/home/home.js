@@ -11,17 +11,49 @@ Template.Home.events({
         Meteor.call('removeAllSongofthedayVideos');
         e.preventDefault();
     },
+    'click #removeUserBtn': function(e, tmpl) {
+        var id = Meteor.user()._id;
+        Meteor.call('removeUser', id, function(err, response) {
+            console.log("we did it. removed" + response);
+        });
+        e.preventDefault();
+    }
 });
 
 Template.Home.helpers({
     songofthedayID: function() {
-        return Songoftheday.findOne({}, {
+        sod = Songoftheday.findOne({}, {
             sort: {
                 created_at: -1
             }
         }).video._id;
+
+
+        return sod || "";
     }
 });
+
+
+Template.Home.user_image = function() {
+    return $.trim(Meteor.user().profile.picture);
+
+    // try {
+    //     if (Meteor.user().services.facebook) {
+    //         return "http://graph.facebook.com/" + Meteor.user().services.facebook.id + "/picture/?type=large";
+
+    //     } else if (Meteor.user().services.twitter) {
+    //         return Meteor.user().services.twitter.profile_image_url;
+    //     } else if (Meteor.user().profile) {
+    //         return $.trim(Meteor.user().profile.avatar);
+    //     } else {
+    //         return "http://rcolepeterson.com/images/francis_peterson.jpg";
+    //     }
+    // } catch (err) {
+    //     console.log(err);
+    // }
+};
+
+
 
 /*****************************************************************************/
 /* Home: Lifecycle Hooks */

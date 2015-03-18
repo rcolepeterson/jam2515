@@ -1,11 +1,36 @@
 <template name="Videodetail">
+    <div class="videoWrapper">
+        <div id="player"></div>
+    </div>
+    <div class="videoInfo">
+        <!-- <span class="s-alert-close"></span>
+        <img class="img-responsive img-circle pull-left" src="{{authorImage}}" alt="">
+        <span class="videotitle">{{postTitle}}</span>
+        <br/>by {{email}}
+        <br/>
+         <div class="social">
+            <button type="button" class="btn btn-default btn-like" aria-label="Left Align">
+                <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <span class="like">{{like}}</span>
+            </button>
+        </div> -->
+        <div class="thumb">
+            <span class="s-alert-close"></span>
+            <div class="">
+                <img class="img-responsive img-circle pull-left" src="{{authorImage}}" alt="">
+                <span class="">{{postTitle}}</span>
+                <br>by {{email}}
+                <br>
+            </div>
+            <div>&nbsp;</div>
+            <div class="">
+                <button type="button" class="btn btn-default btn-like pull-left" aria-label="Left Align">
+                    <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                    <span class="like">{{like}}</span>
+                </button>
+            </div>
 
-  <div class="videoWrapper">
-    <!-- Copy & Pasted from YouTube -->
-    <!-- <iframe width="560" height="349" src="http://www.youtube.com/embed/{{_id}}?rel=0&hd=1" frameborder="0" allowfullscreen></iframe> -->
-    <div id="player"></div>
-</div>
+        </div>
+    </div>
+
 </template>
-
-<!-- var yt_id = Router.current().params._id; -->
-

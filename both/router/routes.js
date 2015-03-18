@@ -45,3 +45,4 @@ Router.route('/videodetail/:_id', {
 
     }
 });
+
