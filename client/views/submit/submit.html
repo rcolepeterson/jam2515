@@ -1,15 +1,19 @@
+
 <template name="Submit">
-    <div class="container submit">
+<div class="row">
+<div class='section-title'>Search</div>
+    </div>
+    <div class="submit">
         <div class="row"><a><i class="fa fa-close fa-3x pull-right"></i></a>
         </div>
-        <div id="searchForm" class="centerMe">
-            <label for="searchInput">Search for a video to submit.
+        <div id="searchForm" class="">
+            <label for="searchInput">Find a video to add.
             </label>
             <input id="searchInput" name="searchInput" type="text" placeholder="Artist Name" autofocus="true">
             <br>
-            <a href="#" class="btn btn-default pull-right searchVideoBtn" role="button">Submit</a>
+            <a href="#" class="btn btn-primary pull-right searchVideoBtn" role="button">Find</a>
         </div>
-        <div id="loader" class="centerMe"><i class="fa fa-5x fa-refresh fa-spin"></i>
+        <div id="loader" class="centerMe"><i class="fa fa-2x fa-refresh fa-spin"></i>
         </div>
         <br>
 
@@ -19,8 +23,7 @@
 
     </div>
 
-    <!-- <nav class="navbar-fixed-top"> -->
-    <div id="submitForm" class="row centerMe">
+    <div id="submitForm" class="row">
         <div class="thumbnail">
             <img src="{{selThumbImg}}" class="img-responsive">
             <div class="caption">
@@ -33,12 +36,10 @@
             </div>
         </div>
     </div>
-
-    <!--  </nav> -->
 </template>
 
 <template name="utubeItem">
-    <div class="col-sm-4 col-lg-3 col-md-4 thumb">
+    <div class="col-xs-12 thumb">
         <a class="thumbnail">
             <img class="img-responsive" src="{{data.thumbnail.hqDefault}}">
         </a>
@@ -48,7 +49,7 @@
         </div>
         <div class="social">
             <a href="#" data-id="{{_id}}" class="btn btn-primary submitFormBtn" role="button">
-               Submit
+               Add
             </a>
         </div>
         {{#if isAdmin}}

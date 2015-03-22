@@ -1,0 +1,56 @@
+<template name="mixtape">
+    <div class="container-fluid" id="home">
+        <div class="row">
+            <div class="col-xs-1">
+                {{#each usersOnline}} 
+                {{>userInfo}}
+                {{/each}}
+            </div>
+            <div class="col-xs-5 videoPlayer">
+                <div class='section-title row'>VideoName</div>
+                <div class="videoWrapper row">
+                    <div id="player"></div>
+                </div>
+                <div class="vten"></div>
+                {{>message}}
+                <!-- {{>videoInfo}} -->
+
+            </div>
+            <div class="playlist col-xs-3">
+                {{>Videos}}
+            </div>
+            <div class="search col-xs-3">
+                {{>Submit}}
+            </div>
+
+        </div>
+    </div>
+</template>
+
+<template name="userInfo">
+    <div class="row">
+        <img src="{{profile.picture}}">
+        <!--  username: {{username}} twitter: {{services.twitter.screenName}} facebook:{{profile.name}} email: {{#each emails}} {{this.address}} {{/each}} -->
+    </div>
+</template>
+
+<template name="videoInfo">
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" style="width: {{percentageLiked}}%;">
+            <span class="my-centered">Like Score: {{percentageLiked}}% </span>
+        </div>
+    </div>
+
+    <button class="btn btn-primary btn-like btn-rate"><span class="glyphicon glyphicon-thumbs-up"></span>
+    </button>
+    <button class="btn btn-primary btn-hate btn-rate"><span class="glyphicon glyphicon-thumbs-down"></span>
+    </button>
+    <div>&nbsp;</div>
+    <div>&nbsp;</div>
+    <p>VIDEO ID: {{videoId}}</p>
+    <button class="btn btn-primary btn-next">next</button>
+    <button class="btn btn-primary btn-becomeOwner">becomeOwner</button>
+
+    <p>You are the owner: {{isYourRoom}}</p>
+    <p>Likes: {{likes}}</p>
+</template>

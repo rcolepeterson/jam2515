@@ -1,0 +1,19 @@
+<template name="message">
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+            <form>
+                <div class="input-group">
+                    <input id="messageInput" class="form-control" maxlength="50" name="messageInput" placeholder="Send a message to the group"> <span class="input-group-btn">
+                    	<input class="btn btn-default msgBtn" type="submit">Go!
+                    </span>
+                </div>
+                </form>
+            </div>
+            <ul class="list-group">
+                {{#each messages}}
+                <li class="list-group-item">{{message}}</li>{{/each}}
+            </ul>
+        </div>
+    </div>
+</template>

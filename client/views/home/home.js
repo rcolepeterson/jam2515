@@ -7,8 +7,8 @@ Template.Home.events({
         e.preventDefault();
     },
 
-    'click #removeallSOD': function(e, tmpl) {
-        Meteor.call('removeAllSongofthedayVideos');
+    'click #removeallMsgs': function(e, tmpl) {
+        Meteor.call('removeAllMessages');
         e.preventDefault();
     },
     'click #removeUserBtn': function(e, tmpl) {
@@ -17,20 +17,55 @@ Template.Home.events({
             console.log("we did it. removed" + response);
         });
         e.preventDefault();
+    },
+    'click #removeallRooms': function(e, tmpl) {
+        Meteor.call('removeallRooms');
+        e.preventDefault();
+    },
+
+
+    'click .stert': function(e, tmpl) {
+
+    if (Rooms.find().fetch().length === 0) {
+
+            if (!Meteor.user()) {
+                sAlert.error('Hold On! You must be logged in to start this party!!', {
+                    effect: 'genie',
+                    position: 'right-bottom',
+                    timeout: 5000
+                });
+                return;
+            }
+
+
+            Rooms.insert({
+                created_at: new Date(),
+                playerCurrentTime: 0,
+                ownerId: Meteor.user()._id,
+                roomname: 'Thst is my jam',
+                videoId: 'CvgqWO_TgP0',
+                like: 3
+            });
+
+        } else {
+            Router.go('mixtape');
+        }
+        e.preventDefault();
     }
+
+
+
 });
 
 Template.Home.helpers({
-    songofthedayID: function() {
-        sod = Songoftheday.findOne({}, {
-            sort: {
-                created_at: -1
-            }
-        }).video._id;
-
-
-        return sod || "";
-    }
+    roomStatus: function() {
+        var room = Rooms.findOne({});
+        var str = "No party. Click here to start one.";
+        if (room) {
+            str = "Join the party."
+        }
+        return str;
+    },
 });
 
 

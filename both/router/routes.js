@@ -7,42 +7,43 @@ Router.configure({
     notFoundTemplate: 'NotFound'
 });
 
-/*
- *  Example:
- *  Router.route('/', {name: 'home'});
- */
 Router.route('/', {
-    name: 'home'
-});
-Router.route('/submit', {
-    name: 'submit'
-});
-Router.route('/videos', {
-    name: 'videos'
-});
-
-Router.route('/videodetail/:_id', {
-    name: 'videodetail',
-    //template: 'PostIndex',
+    name: 'Home',
+    template: 'Home',
     waitOn: function() {
-        //return [Meteor.subscribe('videos')];
+        return [Meteor.subscribe('rooms')]
     },
     data: function() {
-        return Videos.findOne({
-            _id: Router.current().params._id
-        });
     },
     action: function() {
-        Videos.update({
-            _id: Router.current().params._id
-        }, {
-            $inc: {
-                postviews: 1
-            }
-        });
-
-        this.render('Videodetail');
-
+        this.render('Home');
     }
 });
 
+
+Router.route('/mixtape', {
+    name: 'mixtape',
+    template: 'mixtape',
+    waitOn: function() {
+        return [Meteor.subscribe('rooms'), Meteor.subscribe('videos'), Meteor.subscribe("messages"), Meteor.subscribe("userStatus")]
+    },
+    data: function() {
+        
+        if (Rooms.find().fetch().length === 0) {
+            Router.go('Home');
+            return;
+        }
+
+        //console.log('Router data has been called.')
+        //do we have a room?
+        var room = Rooms.findOne({}, {
+            sort: {
+                created_at: -1
+            }
+        });
+        return room;
+    },
+    action: function() {
+        this.render('mixtape');
+    }
+});

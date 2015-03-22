@@ -11,6 +11,10 @@ Accounts.onCreateUser(function(options, user) {
             options.profile.picture = user.services.twitter.profile_image_url;
         }
 
+        if (!options.profile.picture) {
+            options.profile.picture = "//fillmurray.com/50/50";
+        }
+
         user.profile = options.profile;
     }
 
@@ -21,6 +25,16 @@ Accounts.onCreateUser(function(options, user) {
     return user;
 });
 
-Accounts.onLogin(function() {
-    //console.log('onLogin');
+Accounts.onLogin(function(options, user) {
+    
+    // var hasPic = Meteor.users.find({_id: CurrentUserId}).profile.picture;
+
+    // console.log(hasPic.count + 'onLogin',CurrentUserId);
+    // //
+    // var picture = "//fillmurray.com/50/50";
+
+    // Meteor.call('setUserPic', picture, function(error, result) {
+    //         console.log('set user pic ' + result)
+    //     });
+
 });

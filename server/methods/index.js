@@ -1,12 +1,47 @@
 Meteor.methods({
-    removeAllSongofthedayVideos: function() {
-        return Songoftheday.remove({});
-    },
+   
     removeAllVideos: function() {
         return Videos.remove({});
     },
-    removeUser:function(_id){
-    	return Meteor.users.remove(_id);
+
+    removeAllMessages: function() {
+        return Messages.remove({});
+    },
+
+    removeOneVideo: function(_id) {
+        return Videos.remove({
+            videoId: _id
+        });
+    },
+    removeUser: function(_id) {
+        return Meteor.users.remove(_id);
+    },
+    removeallRooms: function() {
+        return Rooms.remove({});
+    },
+    updatePlayerCurrentTime: function(_id, playerCurrentTime) {
+        Rooms.update({
+            ownerId: _id
+        }, {
+            $set: {
+                playerCurrentTime: playerCurrentTime
+            }
+        }, {
+            multi: false
+        });
+    },
+    updateRoomOwner: function(_id) {
+        console.log('updateRoomOwner: ' + _id);
+        var curRommId = Rooms.findOne({})._id;
+        Rooms.update({
+            _id: curRommId
+        }, {
+            $set: {
+                ownerId: _id
+            }
+        }, {
+            multi: false
+        });
     }
 });
 

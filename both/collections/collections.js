@@ -1,2 +1,4 @@
 Videos = new Meteor.Collection('videos');
-Songoftheday = new Meteor.Collection('songoftheday');
+Messages = new Meteor.Collection('messages');
+Rooms = new Mongo.Collection('rooms');
+

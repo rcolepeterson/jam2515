@@ -1,0 +1,29 @@
+#home {
+    margin-top: 50px;
+}
+.playlist {
+    /*background-color: #2a2a2a;*/
+    /* height: 290px;
+    overflow: auto;
+    position: relative;*/
+}
+.videoPlayer {
+    background-color: #2e2e2e;
+}
+.search {
+    /*background-color: #222222;*/
+}
+.progress {
+    height: 5px;
+}
+
+.vten{
+	margin-top: 5px;
+}
+.vert-five-btm{
+	margin-bottom: 5px;
+}
+
+.vert-ten-btm{
+	margin-bottom: 10px;
+}

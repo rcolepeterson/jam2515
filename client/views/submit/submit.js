@@ -1,27 +1,21 @@
+//
 /*****************************************************************************/
 /* Submit: Event Handlers and Helpersss .js*/
 /*****************************************************************************/
 Template.Submit.events({
     'click .submitFormBtn': function(e, tmpl) {
-
-        // var id = tmpl.state.get('selId');
         var id = $(e.currentTarget).data("id");
         var obj = foos.findOne({_id: id});
-        //debugger;
         var data = obj.data;
-        //debugger;
         var empty = "";
-        //var link = tmpl.find('#urlinput').value;
-        //var desc = tmpl.find('#descinput').value;
         var email = 'colep@zaaz.com';
         var userId = 444;
         var postAuthorImage = "http://fillmurray.com/50/50";
+        var name = "";
 
         submitPost = function() {
-
             if (!Meteor.user()) {
-
-                sAlert.error('Boom! You must be logged in to post a video!', {
+                sAlert.error('Hey! You must be logged in to post a video!', {
                     effect: 'genie',
                     position: 'right-bottom',
                     timeout: 3000
@@ -34,6 +28,10 @@ Template.Submit.events({
 
             if (Meteor.user().emails) {
                 email = Meteor.user().emails[0].address;
+            }
+
+            if (name = "") {
+                name = email
             }
 
             if (Meteor.user().profile && Meteor.user().profile.picture) {
@@ -56,22 +54,11 @@ Template.Submit.events({
                 postviews: 0
             });
 
-            console.log('we have submitted VideoID', VideoID);
-
             // sAlert.success('Boom! Your post has been submitted! Great post name BTW.', {
             //     effect: 'genie',
             //     position: 'right-bottom',
             //     timeout: 'no'
             // });
-
-            //tlSubmit.reverse();
-
-           // redirect to post.
-            Router.go('videodetail', {
-                _id: VideoID
-            });
-
-
 
         };
 
@@ -95,9 +82,6 @@ Template.Submit.created = function() {
     this.state = new ReactiveDict();
     this.state.set('selThumbImg', '');
     this.state.set('selTitle', '');
-
-
-
 };
 
 Template.Submit.helpers({
@@ -265,7 +249,9 @@ var init = function() {
         if (videoItems) {
             var length = videoItems.length;
             $.each(videoItems, function(i, data) {
-                foos.insert({data: data});
+                foos.insert({
+                    data: data
+                });
                 if ((length - 1) === i) {
                     tl.play();
                 }
