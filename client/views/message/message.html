@@ -1,19 +1,68 @@
 <template name="message">
+
+<div class="panel panel-default">
+            <div class="panel-heading">
+            <form>
+                <div class="input-group">
+                    <input id="messageInput" class="form-control" maxlength="50" name="messageInput" placeholder="Send a message to the group"> <span class="input-group-btn">
+                        <input class="btn btn-default msgBtn" type="submit">Go!
+                    </span>
+                </div>
+                </form>
+            </div></div>
+
     <div class="row">
+        <div class="col-xs-12">
+            <div class="widget-box">
+                <div class="widget-title">
+                    <span class="icon"><i class="fa fa-comment"></i></span>
+                    <h5>Recent comments</h5>
+                </div>
+                <div class="widget-content nopadding">
+                    <ul class="recent-comments">
+                     {{#each messages}}
+                        <li>
+                            <div class="user-thumb">
+                                <img width="40" height="40" alt="User" src="{{authorImage}}">
+                            </div>
+                            <div class="comments">
+
+                                <span class="user-info">{{authorName}}</span>
+                                <p>
+                                    <span class="msg">{{message}}</span>
+                                </p>
+
+                            </div>
+                        </li>
+                      {{/each}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  <div class="row">
+
+
+
+
         <div class="panel panel-default">
             <div class="panel-heading">
             <form>
                 <div class="input-group">
                     <input id="messageInput" class="form-control" maxlength="50" name="messageInput" placeholder="Send a message to the group"> <span class="input-group-btn">
-                    	<input class="btn btn-default msgBtn" type="submit">Go!
+                        <input class="btn btn-default msgBtn" type="submit">Go!
                     </span>
                 </div>
                 </form>
             </div>
+
+
+
             <ul class="list-group">
                 {{#each messages}}
                 <li class="list-group-item">{{message}}</li>{{/each}}
             </ul>
         </div>
-    </div>
+    </div> -->
 </template>

@@ -1,49 +1,31 @@
-
 <template name="Submit">
-<div class="row">
-<div class='section-title'>Search</div>
+    <div class="row">
+        <div class='section-title vert-ten-btm'>Search</div>
     </div>
     <div class="submit">
-        <div class="row"><a><i class="fa fa-close fa-3x pull-right"></i></a>
-        </div>
         <div id="searchForm" class="">
-            <label for="searchInput">Find a video to add.
-            </label>
-            <input id="searchInput" name="searchInput" type="text" placeholder="Artist Name" autofocus="true">
-            <br>
-            <a href="#" class="btn btn-primary pull-right searchVideoBtn" role="button">Find</a>
+            <div class="input-group">
+                <input id="searchInput" class="form-control" maxlength="50" name="searchInput" placeholder="Artist Name"> <span class="input-group-btn">
+                        <input class="btn btn-default searchVideoBtn" type="submit">Go!
+                    </span>
+            </div>
         </div>
-        <div id="loader" class="centerMe"><i class="fa fa-2x fa-refresh fa-spin"></i>
+        <div id="loader" class="centerMe">
+            <i class="fa fa-2x fa-refresh fa-spin"></i>
         </div>
         <br>
-
         <div id="results" class="row thumbnailHolder">
-            {{#each foosItems}} {{>utubeItem}} {{/each}}
-        </div>
-
-    </div>
-
-    <div id="submitForm" class="row">
-        <div class="thumbnail">
-            <img src="{{selThumbImg}}" class="img-responsive">
-            <div class="caption">
-                <h4>{{selTitle}}</h4>
-                <!-- <p>{{selDesc}}</p> -->
-                <h3>Is this your Jam?</h3>
-                <p><a href="#" class="btn btn-primary submitFormBtn" role="button">Yes</a>
-                    <a class="btn btn-default submitFormBtnCancel" role="button">No</a>
-                </p>
-            </div>
+            {{#each videoItems}} {{>youtubeItem}} {{/each}}
         </div>
     </div>
 </template>
 
-<template name="utubeItem">
+<template name="youtubeItem">
     <div class="col-xs-12 thumb">
         <a class="thumbnail">
             <img class="img-responsive" src="{{data.thumbnail.hqDefault}}">
         </a>
-        <div class="userInfo">
+        <div class="userInfo search">
             <img class="img-responsive img-circle pull-left" src="{{authorImage}}" alt="">
             <span>{{data.title}}</span>
         </div>
@@ -52,8 +34,5 @@
                Add
             </a>
         </div>
-        {{#if isAdmin}}
-        <button class="btn sodBtn">sod</button>
-        {{/if}}
     </div>
 </template>

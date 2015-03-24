@@ -16,10 +16,17 @@
     background-color: #fff;
     padding: 10px;
     height: 70px;
+    font-size: 12px;
 }
-.userInfo img {
+
+.userInfo.search {
+    height: 50px;
+}
+
+
+/*.userInfo img {
     margin-right: 10px;
-}
+}*/
 
 .social{
 	height:60px;

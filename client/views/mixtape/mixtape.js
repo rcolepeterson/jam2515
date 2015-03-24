@@ -80,14 +80,18 @@ Template.mixtape.helpers({
     },
 
     videoId: function() {
-        var roomVideoId = this.videoId;
-        return roomVideoId;
+        return this.videoId;
+    },
+    // videoTitle: function()
+    // {
+    //     return Rooms.findOne({}).videoTitle;
+    // },
+    video: function()
+    {
+        return Videos.findOne({videoId:this.videoId});
     },
     isYourRoom: function() {
-
-        if (!Meteor.user())
-            return;
-
+        if (!Meteor.user()){return;}
         return this.ownerId === Meteor.user()._id;
     },
     likes: function() {
@@ -95,47 +99,42 @@ Template.mixtape.helpers({
     },
 
     usersOnline: function() {
-        return Meteor.users.find({
-            "status.online": true
-        })
+        return Meteor.users.find({"status.online": true})
     },
 
-    percentageLiked: function() {
-        var perc = Math.round((this.like / 6) * 100);
-        if (perc > 100)
-            perc = 100;
-        return perc
-    }
-
-
+    // percentageLiked: function() {
+    //     var perc = Math.round((this.like / 6) * 100);
+    //     if (perc > 100){
+    //         perc = 100;
+    //     }
+    //     return perc
+    // }
 });
 
 Template.videoInfo.helpers({
-
-
-
-
     usersOnline: function() {
         return Meteor.users.find({
             "status.online": true
         })
     },
-
     percentageLiked: function() {
-        var perc = Math.round((this.like / 6) * 100);
-        if (perc > 100)
+        var perc = Math.round((this.like / 6) * 100), $pBar = $('.progress-bar');
+        $pBar.removeClass('progress-bar-danger');
+        if (perc > 100){
             perc = 100;
+        }else if (perc <= 25){
+            $pBar.addClass('progress-bar-danger');
+        }
+
+        if (perc < 5){
+            perc = 5;
+        }
+        
         return perc
     }
-
-
 });
 
-
-
-Meteor.users.find({
-    "status.online": true
-}).observe({
+Meteor.users.find({"status.online": true }).observe({
     added: function(id) {
         // id just came online
         console.log(id + ' just came online')
@@ -144,7 +143,7 @@ Meteor.users.find({
         var r = Rooms.findOne({});
         if (r.ownerId === user._id) {
             player.stopVideo();
-            console.log('no owner go home');
+            console.log('no owner. lets go home');
             Meteor.call('removeallRooms');
             // sAlert.error('OH NO! The guy who started the room left! Start a new party.', {
             //     effect: 'genie',
@@ -169,7 +168,8 @@ Template.mixtape.rendered = function() {
     Rooms.find({}).observeChanges({
         added: function(id, fields) {
             // ...
-        }, // Use either added() OR(!) addedBefore()
+        }, 
+        // Use either added() OR(!) addedBefore()
         // addedBefore: function (id, fields, before) {
         //     // ...
         // },
@@ -195,8 +195,9 @@ Template.mixtape.rendered = function() {
 
 
     var room = Rooms.findOne({});
-    if (!room)
+    if (!room){
         return;
+    }
 
     var videoId = room.videoId;
 
@@ -267,12 +268,13 @@ Template.mixtape.destroyed = function() {
  * @return {Boolean} denotes if this user is the Room Owner.
  */
 function isRoomOwner() {
-    var val = false,
-        room = Rooms.findOne({});
-    if (!Meteor.user())
+    var val = false,room = Rooms.findOne({});
+    if (!Meteor.user()){
         val = false;
-    else if (room.ownerId === Meteor.user()._id)
+    }
+    else if (room.ownerId === Meteor.user()._id){
         val = true;
+    }
 
     return val;
 }
@@ -288,12 +290,11 @@ function removeVideoAndLoad() {
 
         var id = Rooms.findOne({}).videoId;
         Meteor.call('removeOneVideo', id, function(error, result) {
-            var videoId = Videos.findOne({}).videoId;
+            var video = Videos.findOne({});
+            var videoId = video.videoId;
             var roomId = Rooms.findOne({})._id;
             $('#content-container .btn-rate').attr('disabled', false);
-            Rooms.update({
-                _id: roomId
-            }, {
+            Rooms.update({_id: roomId}, {
                 $set: {
                     videoId: videoId,
                     like: 3

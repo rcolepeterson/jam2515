@@ -9,24 +9,12 @@
 
 <template name="VideoItem">
     <div class="col-xs-12 thumb">
-        <a class="thumbnail btn-video" href="">
-            <img class="img-responsive" src="{{postImage}}" alt="">
+        <a class="thumbnail btn-video" style="background-color:{{getStatusColor}}">
+            <img class="img-responsive" src="{{videoThumb}}">
         </a>
-        <div class="userInfo">
-            <img class="img-responsive img-circle pull-left" src="{{authorImage}}" alt="">
-            <span class="title text-ellpise">{{postTitle}}</span>
-            <br>by {{email}}
-            <br>
+        <div class="userInfo" style="background-color:{{getStatusColor}}">
+            <img class="img-responsive img-circle center-block" src="{{userImage}}">
         </div>
-        <!-- <div class="social">
-            <button type="button" class="btn btn-default btn-like" aria-label="Left Align">
-                <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-                <span class="like">{{like}}</span>
-            </button>
-        </div> -->
-        {{#if isAdmin}}
-        <button class="btn sodBtn">sod</button>
-        {{/if}}
     </div>
 </template>
 

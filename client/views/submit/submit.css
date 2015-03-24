@@ -5,7 +5,7 @@
     opacity: 0;
 }
 #searchForm input {
-    display: block;
+   /* display: block;
     margin: 0;
     outline: none;
     width: 100%;
@@ -16,7 +16,7 @@
     text-overflow: ellipsis;
     font-weight: bold;
     font-size: 1em;
-    border-radius: 0;
+    border-radius: 0;*/
 }
 
 #searchForm.centerMe{
@@ -24,5 +24,9 @@
 }
 #submitForm{
     display: none;
-    margin-top: 100px;
+    /*margin-top: 100px;*/
+}
+
+#loader{
+    display:none;
 }
