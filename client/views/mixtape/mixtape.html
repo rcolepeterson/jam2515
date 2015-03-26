@@ -3,6 +3,7 @@
         <div class="row">
             <div class="col-xs-1">
                 {{#each usersOnline}} {{>userInfo}} {{/each}}
+                {{ownerHasNavigatedAway}}
             </div>
             <div class="col-sm-5 videoPlayer info">
                 <div class='section-title row'>
@@ -16,8 +17,15 @@
                     </button>
                    
                 </div>
+                <!--
+                 {{#if Template.subscriptionsReady}}
+                  {{else}}
+                    Loading…
+                  {{/if}} 
+                -->
                 {{>videoInfo}}
                 <div class="videoWrapper row">
+                    <div id="playerCover"></div>
                     <div id="player"></div>
                 </div>
                 <div class="vten"></div>
@@ -50,9 +58,9 @@
     <!-- <div>&nbsp;</div>
     <div>&nbsp;</div>
     <p>VIDEO ID: {{videoId}}</p>
-    <button class="btn btn-primary btn-next">next</button>
+    <button class="btn btn-primary btn-next">next</button> -->
     <button class="btn btn-primary btn-becomeOwner">becomeOwner</button>
 
     <p>You are the owner: {{isYourRoom}}</p>
-    <p>Likes: {{likes}}</p> -->
+   <!--  <p>Likes: {{likes}}</p> -->
 </template>

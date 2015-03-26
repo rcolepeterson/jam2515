@@ -15,6 +15,19 @@ Template.Submit.events({
 
         var id = $(e.currentTarget).data("id");
         var data = localVideoCollection.findOne({_id: id}).data;
+        
+        var videoCount = Videos.find({videoId:data.id}).count();
+        console.log(videoCount);
+        if ( videoCount > 0){
+            sAlert.error('This video is already in the playlist. How about something new for once?', {
+                effect: 'genie',
+                position: 'right-bottom',
+                timeout: 3000
+            });
+
+            return;
+        }
+
         var userName = Meteor.user().username || Meteor.user().profile.name || "anon";
         var userImage = Meteor.user().profile.picture;
         var userId = Meteor.user()._id;

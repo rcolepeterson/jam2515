@@ -6,7 +6,6 @@ Template.Home.events({
         Meteor.call('removeAllVideos');
         e.preventDefault();
     },
-
     'click #removeallMsgs': function(e, tmpl) {
         Meteor.call('removeAllMessages');
         e.preventDefault();
@@ -22,11 +21,8 @@ Template.Home.events({
         Meteor.call('removeallRooms');
         e.preventDefault();
     },
-
-
     'click .stert': function(e, tmpl) {
-
-    if (Rooms.find().fetch().length === 0) {
+        if (Rooms.find().fetch().length === 0) {
 
             if (!Meteor.user()) {
                 sAlert.error('Hold On! You must be logged in to start this party!!', {
@@ -37,13 +33,21 @@ Template.Home.events({
                 return;
             }
 
+            var videoId = 'CvgqWO_TgP0';
+            if ( Videos.findOne({})){
+                var playlistVideoItem = Videos.findOne({}).videoId;
+                if ( playlistVideoItem ){
+                    videoId = playlistVideoItem;
+                }
+            }
 
             Rooms.insert({
                 created_at: new Date(),
                 playerCurrentTime: 0,
                 ownerId: Meteor.user()._id,
-                roomname: 'Thst is my jam',
-                videoId: 'CvgqWO_TgP0',
+                roomname: 'That is my jam',
+                videoId: videoId,
+                ownerHasNavigatedAway:false,
                 like: 3
             });
 
@@ -52,9 +56,6 @@ Template.Home.events({
         }
         e.preventDefault();
     }
-
-
-
 });
 
 Template.Home.helpers({
