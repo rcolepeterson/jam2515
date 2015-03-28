@@ -32,40 +32,16 @@ Template.Submit.events({
         var userImage = Meteor.user().profile.picture;
         var userId = Meteor.user()._id;
 
-        if (Meteor.user().profile && Meteor.user().profile.picture) {
-            postAuthorImage = Meteor.user().profile.picture;
-        }
-        var obj
         Meteor.call('newVideo', userId,userName,userImage,data, function (error, result) {
-            console.log('cool dude.')
+            if ( error )
+                console.error(error);
+        
+            //remove from local collection after selected.
+            localVideoCollection.remove({_id: id});
+
         });
 
-        // Videos.insert({
-        //     created_at: new Date(),
-        //     userId: userId,
-        //     userName: userName,
-        //     userImage: userImage,
-        //     videoId: data.id,
-        //     videoThumb: data.thumbnail.hqDefault,
-        //     videoDesc: data.description,
-        //     videoTitle: data.title,
-        //     like:3
-        // },function(err, id){
-           
-        //     var roomId = Rooms.findOne()._id;
-        //     var count = Videos.find({}).count();
-        //     var insertedvideo = Videos.findOne({_id:id});
-            
-        //     //we just inserted the 1st video. start the player.
-        //     if ( count === 1){
-        //         Rooms.update({_id:roomId}, {$set: {videoId:insertedvideo.videoId}}, function(err){
-        //         }); 
-        //     }
-
-
-        // });
-        //remove from local collection after selected.
-        localVideoCollection.remove({_id: id});
+        
         e.preventDefault();
     }
 });

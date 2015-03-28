@@ -44,13 +44,10 @@ Meteor.methods({
             multi: false
         });
     },
-    /**
-     * [updateRoomVideoID description]
-     * @param  {[type]} videoId [description]
-     * @return {[type]}         [description]
-     */
     updateRoomVideoID: function(videoId) {
+        console.log('updateVideoID: ' + videoId);
         var curRommId = Rooms.findOne({})._id;
+        console.log('curRommId ' + curRommId)
         Rooms.update({
             _id: curRommId
         }, {
@@ -63,39 +60,46 @@ Meteor.methods({
     },
     /**
      * [newVideo description]
-     * @param  {[type]} userId    [description]
-     * @param  {[type]} userName  [description]
-     * @param  {[type]} userImage [description]
-     * @param  {[type]} data      [description]
-     * @return {[type]}           [description]
+     * @param  {[type]} userId          [description]
+     * @param  {[type]} userName        [description]
+     * @param  {[type]} userImage       [description]
+     * @param  {[type]} youtubeData     [description]
+     * @return {[type]}                 [description]
      */
-    newVideo: function(userId,userName,userImage,youtubeDataObj) {
+    newVideo: function(userId, userName, userImage, youtubeData) {
         Videos.insert({
-            created_at: new Date(),
-            userId: userId,
-            userName: userName,
-            userImage: userImage,
-            videoId: youtubeDataObj.id,
-            videoThumb: youtubeDataObj.thumbnail.hqDefault,
-            videoDesc: youtubeDataObj.description,
-            videoTitle: youtubeDataObj.title,
-            like:3
-        },function(err, id){
-           
-            var roomId = Rooms.findOne()._id;
-            var count = Videos.find({}).count();
-            var insertedvideo = Videos.findOne({_id:id});
-            
-            //we just inserted the 1st video. start the player.
-            if ( count === 1){
-                Rooms.update({_id:roomId}, {$set: {videoId:insertedvideo.videoId}}, function(err){
-                }); 
-            }
-        });
+                created_at: new Date(),
+                userId: userId,
+                userName: userName,
+                userImage: userImage,
+                videoId: youtubeData.id,
+                videoThumb: youtubeData.thumbnail.hqDefault,
+                videoDesc: youtubeData.description,
+                videoTitle: youtubeData.title,
+                like: 3
+            },
+            function(err, id) {
+                var roomId = Rooms.findOne()._id;
+                var count = Videos.find({}).count();
+                var insertedvideo = Videos.findOne({
+                    _id: id
+                });
+                //we just inserted the 1st video. update the Rooms obj which will start the player.
+                if (count === 1) {
+                    Rooms.update({
+                        _id: roomId
+                    }, {
+                        $set: {
+                            videoId: insertedvideo.videoId
+                        }
+                    }, function(err) {});
+                }
+            });
     },
     /**
-     * [setUserPic description]
-     * @param {[type]} avatar [description]
+     * Updates the user's profile picture.
+     * CurrentUserId is the user's meteor id. we define this on load @ /server/publish/index.js.
+     * @param {string} avatar [path to image]
      */
     setUserPic: function setUserPic(avatar) {
         return Meteor.users.update({

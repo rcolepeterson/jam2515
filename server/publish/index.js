@@ -1,3 +1,7 @@
+/**
+ * Global var for the user's id.
+ * @return {[type]} [description]
+ */
 (function() {
     CurrentUserId = null;
     Meteor.publish(null, function() {
