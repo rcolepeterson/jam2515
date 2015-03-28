@@ -45,6 +45,15 @@ App.helpers.displayAlert = function(str,val)
     });
 }
 
+App.helpers.displayAlertInfo = function(str,val)
+{
+    sAlert.info(str, {
+        effect: 'stackslide',
+        position: 'right-bottom',
+        timeout: 'no'
+    });
+}
+
 App.helpers.setRoomAlert = function(str,val)
 {
     var roomId = Rooms.findOne({})._id;
@@ -63,6 +72,20 @@ App.helpers.createRoom = function() {
         ownerHasNavigatedAway: false,
         like: 3
     });
+}
+
+App.helpers.getUserName = function() {
+
+     var username = Meteor.user().username;
+	 if (!username) {
+	     username = Meteor.user().profile.name;
+	 }
+
+	 if (!username){
+	     username = "Someone";
+	 }
+
+	 return username;
 }
 
 

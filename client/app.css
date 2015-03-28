@@ -12,10 +12,10 @@ html, body {
     font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
     /*background-color: #2e2e2e;
 */
-    background: #800080;
+    background: #222222;
 
 
-    color: #ccc;
+    color: #fff;
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }

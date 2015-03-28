@@ -3,7 +3,7 @@
 /*****************************************************************************/
 
 .thumb {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 .thumbnail {
     margin-bottom: 0;
@@ -17,6 +17,7 @@
     padding: 10px;
     height: 70px;
     font-size: 12px;
+    color: #000;
 }
 
 .userInfo.search {

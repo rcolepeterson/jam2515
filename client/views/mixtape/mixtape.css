@@ -1,5 +1,5 @@
 #home {
-    margin-top: 50px;
+    margin-top: 70px;
 }
 
 #home > div > div.col-sm-5.videoPlayer.info > div.videoWrapper.row {
@@ -16,6 +16,11 @@
     right: 0;
     z-index: 99999;
     display:none;
+}
+
+.section{
+    margin-right: 5px;
+    margin-left: 5px;
 }
 /*****************************************************************************/
 /* Videodetail: Style */
@@ -73,8 +78,9 @@
 }
 
 .progress {
-    height: 5px;
-    margin-bottom: 10px;
+    height: 10px;
+    margin-bottom: 0px;
+    border-radius:0;
 }
 
 .vten {
@@ -87,4 +93,8 @@
 
 .vert-ten-btm {
     margin-bottom: 10px;
+}
+
+.onlineUserImage{
+    margin-right: 0px;
 }

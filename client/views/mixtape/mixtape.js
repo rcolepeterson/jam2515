@@ -16,7 +16,8 @@ Template.mixtape.events({
             $inc: {like: 1}
         });
         //$('#content-container .btn-like').attr('disabled', true);
-       App.helpers.setRoomAlert(Meteor.user().username + ' just liked this video.');
+
+        App.helpers.setRoomAlert(App.helpers.getUserName() + ' just liked this video.');
     },
 
     'click .btn-hate': function(e, tmpl) {
@@ -29,27 +30,17 @@ Template.mixtape.events({
             $inc: {like: -1}
         });
         //$('#content-container .btn-hate').attr('disabled', true);
-       App.helpers.setRoomAlert(Meteor.user().username + ' just dissed this video.');
+        username = App.helpers.getUserName();
+        App.helpers.setRoomAlert(username + ' just dissed this video.');
     }
 });
 
 
 Template.mixtape.helpers({
-    room: function() {
-        return Rooms.findOne({}, {
-            sort: {created_at: -1}
-        });
-    },
-    videoId: function() {
-        return this.videoId;
-    },
     video: function() {
         return Videos.findOne({
             videoId: this.videoId
         });
-    },
-    likes: function() {
-        return this.like;
     },
     usersOnline: function() {
         return Meteor.users.find({
@@ -127,14 +118,19 @@ Template.mixtape.rendered = function() {
     var videoId = "";
     var room = Rooms.findOne({});
     if (room) {
-       videoId = room.videoId
+       videoId = room.videoId;
+    }
+
+    if ( !Videos.findOne({}))
+    {
+         App.helpers.displayAlertInfo('Oh no! There are no more videos in the playlist. Can you SEARCH and add one?');
     }
 
     onYouTubeIframeAPIReady = function() {
         player = new YT.Player("player", {
             playerVars: {
                 'modestbranding': 1,
-                'controls': 1,
+                'controls': 0,
                 'autohide': 0,
                 'autoplay': 1,
                 'showinfo': 0
@@ -186,18 +182,27 @@ function removeVideoAndLoad() {
 
     
     if ( Meteor.users.find({"status.online": true}).count() < 1) {
-        App.displayAlert('No users are logged in so we have to stop until someone signs in');
+        App.helpers.displayAlertInfo('No users are logged in so we have to stop until someone signs in');
         return;
     }
+    var myid = Rooms.findOne({}).videoId;
+    var videoID = Videos.findOne({});
 
     //only run if this user is the room owner.
     if (!Session.get("isRoomOwner")){
+        
+
+        if ( !myid || !videoID){
+            App.helpers.displayAlertInfo('Oh no! There are no more videos in the playlist. Can you SEARCH and add one?');
+        }
+
         adjustPlayhead();
         return;
     }
 
-    var myid = Rooms.findOne().videoId
-    if ( !myid ){
+    if ( !myid || !videoID){
+        player.stopVideo();
+        App.helpers.displayAlertInfo('Oh no! There are no more videos in the playlist. Can you SEARCH and add one?');
         return;
     }
 
@@ -208,7 +213,7 @@ function removeVideoAndLoad() {
 
         var video = Videos.findOne({});
         if (!video){
-            App.displayAlert('Oh no! There are no more videos in the playlist. Can you SEARCH and add one?');
+            App.helpers.displayAlertInfo('Oh no! There are no more videos in the playlist. Can you SEARCH and add one?');
             return;
         }
         var videoId = video.videoId;
@@ -312,6 +317,12 @@ Template.videoInfo.helpers({
         }
         return room.ownerId === Meteor.user()._id;
     },
+
+    video: function() {
+        return Videos.find({});
+    },
+
+
     percentageLiked: function() {
         var perc = Math.round((this.like / 6) * 100), $pBar = $('.progress-bar');
         $pBar.removeClass('progress-bar-danger');

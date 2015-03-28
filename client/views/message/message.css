@@ -2,6 +2,7 @@
     -webkit-box-shadow: none;
     box-shadow: none;
     border-radius: 0;
+    color:#666666;
 }
 .widget-box {
     background: none repeat scroll 0 0 #fafafa;

@@ -3,7 +3,7 @@
 /*****************************************************************************/
 
 .navbar-inverse {
-    background-color: #282828;
+    background-color: #373737;
     border-color: #080808;
 }
 
@@ -14,15 +14,25 @@
 }
 
 .section-title {
-    background-color: #421C52;
+    background-color: #000;
     padding: 10px;
+   /* padding-top: 5px;*/
+  /*  padding-left: 0px;*/
     /*margin-bottom: 5px;*/
     
-    border-right: 1px solid black;
-    height: 54px;
+   /* border-right: 1px solid black;*/
+    height: 55px;
     font-size: 12px;
-    font-weight: bold;
+   /* font-weight: bold;*/
     /*opacity: .5;*/
+    overflow: hidden;
+}
+.section-title.big {
+    font-size: 22px;
+    color: #666;
+}
+.section-title button{
+    border:0;
 }
 
 .buttonOutline {

@@ -7,13 +7,17 @@
             <div class="col-sm-5 videoPlayer info">
                 <div class='section-title row'>
                     <div class="col-xs-9">
+                        {{#if video}}
                         <span class='selVideoTitle'>{{video.videoTitle}}</span>
                         <p class="submittedby">Submitted by {{video.userName}}</p>
+                        {{/if}}
                     </div>
-                    <button class="btn btn-primary btn-hate btn-rate pull-right"><span class="glyphicon glyphicon-thumbs-down"></span>
+                    {{#if video}}
+                    <button class="btn btn-primary btn-hate btn-rate pull-right progress-bar-danger"><span class="glyphicon glyphicon-thumbs-down"></span>
                     </button>
-                    <button class="btn btn-primary btn-like btn-rate pull-right"><span class="glyphicon glyphicon-thumbs-up"></span>
+                    <button class="btn btn-primary btn-like btn-rate pull-right progress-bar-success"><span class="glyphicon glyphicon-thumbs-up"></span>
                     </button>
+                    {{/if}}
                 </div>
                 <!--
                  {{#if Template.subscriptionsReady}}
@@ -26,10 +30,9 @@
                     <div id="playerCover"></div>
                     <div id="player"></div>
                 </div>
-                <div class="vten"></div>
                 {{>message}}
             </div>
-            <div class="playlist col-sm-2">
+            <div class="playlist section col-sm-2">
                 {{>Videos}}
             </div>
             <div class="search col-sm-3">
@@ -40,14 +43,15 @@
 </template>
 <template name="userInfo">
     <div class="row">
-        <img src="{{profile.picture}}">
+        <img class="pull-right onlineUserImage" src="{{profile.picture}}">
     </div>
 </template>
 <template name="videoInfo">
+    {{#if video}}
     <div class="progress row">
         <div class="progress-bar progress-bar-success" role="progressbar" style="width: {{percentageLiked}}%;">
-            <span class="my-centered">Like Score: {{percentageLiked}}% </span>
+           
         </div>
     </div>
+    {{/if}}
 </template>
-
