@@ -9,7 +9,7 @@ Meteor.methods({
     },
 
     removeOneVideo: function(_id) {
-        console.log('Server: We are removing', _id)
+        //console.log('Server: We are removing', _id)
         return Videos.remove({
             videoId: _id
         });
@@ -32,7 +32,7 @@ Meteor.methods({
         });
     },
     updateRoomOwner: function(_id) {
-        console.log('updateRoomOwner: ' + _id);
+        //console.log('updateRoomOwner: ' + _id);
         var curRommId = Rooms.findOne({})._id;
         Rooms.update({
             _id: curRommId
@@ -45,9 +45,9 @@ Meteor.methods({
         });
     },
     updateRoomVideoID: function(videoId) {
-        console.log('updateVideoID: ' + videoId);
+        //console.log('updateVideoID: ' + videoId);
         var curRommId = Rooms.findOne({})._id;
-        console.log('curRommId ' + curRommId)
+        //console.log('curRommId ' + curRommId)
         Rooms.update({
             _id: curRommId
         }, {
