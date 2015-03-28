@@ -3,19 +3,17 @@
         <div class="row">
             <div class="col-xs-1">
                 {{#each usersOnline}} {{>userInfo}} {{/each}}
-                {{ownerHasNavigatedAway}}
             </div>
             <div class="col-sm-5 videoPlayer info">
                 <div class='section-title row'>
-                <div class="col-xs-9">
-                    <span class='selVideoTitle'>{{video.videoTitle}}</span>
-                    <p class="submittedby">Submitted by {{video.userName}}</p>
+                    <div class="col-xs-9">
+                        <span class='selVideoTitle'>{{video.videoTitle}}</span>
+                        <p class="submittedby">Submitted by {{video.userName}}</p>
                     </div>
                     <button class="btn btn-primary btn-hate btn-rate pull-right"><span class="glyphicon glyphicon-thumbs-down"></span>
                     </button>
                     <button class="btn btn-primary btn-like btn-rate pull-right"><span class="glyphicon glyphicon-thumbs-up"></span>
                     </button>
-                   
                 </div>
                 <!--
                  {{#if Template.subscriptionsReady}}
@@ -35,32 +33,21 @@
                 {{>Videos}}
             </div>
             <div class="search col-sm-3">
-                {{>Submit}}
+                {{>admin}} {{>Submit}}
             </div>
-
         </div>
     </div>
 </template>
-
 <template name="userInfo">
     <div class="row">
         <img src="{{profile.picture}}">
     </div>
 </template>
-
 <template name="videoInfo">
     <div class="progress row">
         <div class="progress-bar progress-bar-success" role="progressbar" style="width: {{percentageLiked}}%;">
             <span class="my-centered">Like Score: {{percentageLiked}}% </span>
         </div>
     </div>
-
-    <!-- <div>&nbsp;</div>
-    <div>&nbsp;</div>
-    <p>VIDEO ID: {{videoId}}</p>
-    <button class="btn btn-primary btn-next">next</button> -->
-    <button class="btn btn-primary btn-becomeOwner">becomeOwner</button>
-
-    <p>You are the owner: {{isYourRoom}}</p>
-   <!--  <p>Likes: {{likes}}</p> -->
 </template>
+

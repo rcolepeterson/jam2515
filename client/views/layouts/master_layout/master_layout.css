@@ -3,8 +3,8 @@
 /*****************************************************************************/
 
 .navbar-inverse {
-  background-color: #282828;
-  border-color: #080808;
+    background-color: #282828;
+    border-color: #080808;
 }
 
 #content-container {
@@ -13,24 +13,27 @@
     height:100%;*/
 }
 
-.section-title{
-	background-color: #222222;
-	padding:10px;
-  /*margin-bottom: 5px;*/
-  border-right: 1px solid black;
-  height:54px;
-  font-size: 12px;
+.section-title {
+    background-color: #421C52;
+    padding: 10px;
+    /*margin-bottom: 5px;*/
+    
+    border-right: 1px solid black;
+    height: 54px;
+    font-size: 12px;
     font-weight: bold;
+    /*opacity: .5;*/
 }
 
 .buttonOutline {
-  background: none;
-  /*padding: 12px 22px;*/
-  border-radius: 0;
-  border: 2px solid #222;
-  color:#ccc;
+    background: none;
+    /*padding: 12px 22px;*/
+    
+    border-radius: 0;
+    border: 2px solid #222;
+    color: #ccc;
 }
 
 .buttonOutline:hover {
-  color:#fff;
+    color: #fff;
 }

@@ -13,11 +13,14 @@
 
     <div class="row">
         <div class="col-xs-12">
+            {{#if hasMessages}}
             <div class="widget-box">
+                
                 <div class="widget-title">
                     <span class="icon"><i class="fa fa-comment"></i></span>
                     <h5>Recent comments</h5>
                 </div>
+                
                 <div class="widget-content nopadding">
                     <ul class="recent-comments">
                      {{#each messages}}
@@ -38,6 +41,7 @@
                     </ul>
                 </div>
             </div>
+            {{/if}}
         </div>
     </div>
 

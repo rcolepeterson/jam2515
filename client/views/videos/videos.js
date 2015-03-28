@@ -10,7 +10,7 @@ Template.Videos.helpers({
 Template.VideoItem.helpers({
     getStatusColor:function(){
         var status = 'white';
-        if ( this.videoId === Rooms.findOne({}).videoId)
+        if ( Rooms.findOne({}) && this.videoId === Rooms.findOne({}).videoId)
         {
             status = '#5cb85c';
         }
@@ -20,8 +20,8 @@ Template.VideoItem.helpers({
 Template.mixtape.events({
     'click .btn-video': function(e, tmpl) {
 		var rId = Rooms.findOne({})._id;
-		var videoId = Videos.findOne({}).videoId;
-        Rooms.update({_id: rId}, {$set: {videoId: videoId}}, {multi: false});
+		var videoId = this.videoId;
+//        Rooms.update({_id: rId}, {$set: {videoId: videoId}}, {multi: false});
     }
 });
 

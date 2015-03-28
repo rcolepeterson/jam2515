@@ -1,0 +1,21 @@
+<template name="admin">
+    <div id="admin">
+        <h1>Admin</h1>
+        <div>&nbsp;</div>
+        <div>&nbsp;</div>
+        <button class="btn btn-primary btn-next">Go to next video</button>
+        <button class="btn btn-primary btn-becomeOwner">Become the Room Owner</button>
+        <button class="btn btn-primary btn-StopBeOwner">Stop being the Room Owner</button>
+        <button id="removeUserBtn" class="btn btn-primary">remove user</button>
+        <p>You are the owner: {{isYourRoom}}</p>
+        <p>Likes: {{likes}}</p>
+        <p>Room Owner ID {{roomOwnerId}}</p>
+        <p>{{roomStatus}}</p>
+        <button id="removeAllVideos" class="btn btn-primary">Remove all Videos</button>
+        <button id="removeallRooms" class="btn btn-primary">Remove all Rooms</button>
+        <button id="removeallMsgs" class="btn btn-primary">Remove all Messages</button>
+        <button id="createRoom" class="btn btn-primary">Create a room</button>
+        <button class="btn btn-primary testUpdateRoomID">testUpdateRoomIDr</button>
+        
+    </div>
+</template>

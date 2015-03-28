@@ -17,7 +17,7 @@ Template.Submit.events({
         var data = localVideoCollection.findOne({_id: id}).data;
         
         var videoCount = Videos.find({videoId:data.id}).count();
-        console.log(videoCount);
+       // console.log(videoCount);
         if ( videoCount > 0){
             sAlert.error('This video is already in the playlist. How about something new for once?', {
                 effect: 'genie',
@@ -35,19 +35,35 @@ Template.Submit.events({
         if (Meteor.user().profile && Meteor.user().profile.picture) {
             postAuthorImage = Meteor.user().profile.picture;
         }
-
-        Videos.insert({
-            created_at: new Date(),
-            userId: userId,
-            userName: userName,
-            userImage: userImage,
-            videoId: data.id,
-            videoThumb: data.thumbnail.hqDefault,
-            videoDesc: data.description,
-            videoTitle: data.title,
-            like:3
+        var obj
+        Meteor.call('newVideo', userId,userName,userImage,data, function (error, result) {
+            console.log('cool dude.')
         });
 
+        // Videos.insert({
+        //     created_at: new Date(),
+        //     userId: userId,
+        //     userName: userName,
+        //     userImage: userImage,
+        //     videoId: data.id,
+        //     videoThumb: data.thumbnail.hqDefault,
+        //     videoDesc: data.description,
+        //     videoTitle: data.title,
+        //     like:3
+        // },function(err, id){
+           
+        //     var roomId = Rooms.findOne()._id;
+        //     var count = Videos.find({}).count();
+        //     var insertedvideo = Videos.findOne({_id:id});
+            
+        //     //we just inserted the 1st video. start the player.
+        //     if ( count === 1){
+        //         Rooms.update({_id:roomId}, {$set: {videoId:insertedvideo.videoId}}, function(err){
+        //         }); 
+        //     }
+
+
+        // });
         //remove from local collection after selected.
         localVideoCollection.remove({_id: id});
         e.preventDefault();
@@ -217,7 +233,7 @@ var init = function() {
     $.youtubeAPI = function(searchTerm, cb) {
         $.ajax({
             type: 'GET',
-            url: 'http://gdata.youtube.com/feeds/api/videos?q=' + searchTerm + '&max-results=10&v=2&alt=jsonc',
+            url: 'http://gdata.youtube.com/feeds/api/videos?q=' + searchTerm + '&duration=short&category=music&max-results=10&v=2&alt=jsonc',
             dataType: 'jsonp',
             success: cb,
             error: function(res, statusTXT, jqXHR) {

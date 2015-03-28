@@ -52,5 +52,12 @@ Template.message.helpers({
                 created_at: -1
             }
         });
+    },
+    hasMessages:function(){
+        var val = false
+        if ( Messages.find({}).count() > 0)
+            val = true;
+
+        return val;
     }
 });
