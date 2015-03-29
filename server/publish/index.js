@@ -82,7 +82,7 @@ Rooms.allow({
 
   update: function (userId, doc, fieldNames, modifier) {
     
-    console.log(' we are trying to update: ' + userId + " fieldNames " + fieldNames);
+    //console.log(' we are trying to update: ' + userId + " fieldNames " + fieldNames);
     return true;
   },
 

@@ -8,7 +8,17 @@ Template.Submit.events({
             sAlert.error('Hey! You must be logged in to post a video!', {
                 effect: 'genie',
                 position: 'right-bottom',
-                timeout: 3000
+                timeout: 5000
+            });
+            return;
+        }
+
+
+        if (Videos.find({userId:Meteor.user()._id}).count() > 2) {
+            sAlert.error('You have already added three videos. Give some one else a chance.', {
+                effect: 'genie',
+                position: 'right-bottom',
+                timeout: 5000
             });
             return;
         }

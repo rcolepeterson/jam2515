@@ -41,7 +41,7 @@ App.helpers.displayAlert = function(str,val)
     sAlert.error(str, {
         effect: 'genie',
         position: 'right-bottom',
-        timeout: 3000
+        timeout: 5000
     });
 }
 

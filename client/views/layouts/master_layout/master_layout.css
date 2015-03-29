@@ -27,6 +27,11 @@
     /*opacity: .5;*/
     overflow: hidden;
 }
+
+.section-title.videoTitle{
+    padding-left:0px;
+}
+
 .section-title.big {
     font-size: 22px;
     color: #666;

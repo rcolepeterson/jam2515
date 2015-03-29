@@ -86,6 +86,8 @@ Template.mixtape.rendered = function() {
             if (fields.videoId) {
                 //video has chnaged. load the next one.
                 player.loadVideoById(fields.videoId, 1);
+                sAlert.closeAll();
+                App.helpers.setRoomAlert('New song added by ' + Videos.findOne({}).userName + " !");
             }
 
             if (fields.like) {

@@ -5,7 +5,7 @@
                 {{#each usersOnline}} {{>userInfo}} {{/each}}
             </div>
             <div class="col-sm-5 videoPlayer info">
-                <div class='section-title row'>
+                <div class='section-title videoTitle row'>
                     <div class="col-xs-9">
                         {{#if video}}
                         <span class='selVideoTitle'>{{video.videoTitle}}</span>
@@ -43,7 +43,7 @@
 </template>
 <template name="userInfo">
     <div class="row">
-        <img class="pull-right onlineUserImage" src="{{profile.picture}}">
+        <img class="center-block onlineUserImage" src="{{profile.picture}}">
     </div>
 </template>
 <template name="videoInfo">

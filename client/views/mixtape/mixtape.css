@@ -96,5 +96,6 @@
 }
 
 .onlineUserImage{
-    margin-right: 0px;
+   /* margin-right: 10px;*/
+   margin-bottom: 5px;
 }
