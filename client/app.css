@@ -7,28 +7,39 @@ html, body {
     height: 100%;
     min-height:100%;/* make sure it is at least as tall as the viewport */
     position:relative;
-    /* font-family: 'Open Sans', sans-serif;
-    //font-family: Lora, "Helvetica Neue", Helvetica, Arial, sans-serif;*/
     font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
-    /*background-color: #2e2e2e;
-*/
     background: #222222;
-
-
     color: #fff;
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+
 a {
     cursor: pointer;
 }
+
 ul {
     list-style-type: none;
 }
-/* global helper classes*/
+
+.btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn.active.focus{
+    outline: 0;
+}
 
 .centerMe {
     position: absolute;
     left: 50%;
     top: 50%;
 }
+
+.buttonOutline {
+    background: none;
+    border-radius: 0;
+    border: 2px solid #222;
+    color: #ccc;
+}
+.buttonOutline:hover {
+    color: #fff;
+}
+
+

@@ -6,4 +6,55 @@
 
 <body>
     {{> sAlert}}
+    <!-- Button trigger modal -->
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title" id="myModalLabel">About</h5>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        This is a proof of concept CRUD application built on the Meteor / Node.js platform.
+                  		<br><br>
+                  		This app is using real time data, WebSockets and reactive templates, so that any change to the DB will be represented on the screen(s) immediately.
+                    </p>
+                    <p>
+                        Open up the app in two browser windows and make updates and you will see they stay in sync.
+                    </p>
+                    <ul>
+                        <li>1. Data is written to and pulled from a client side and server side MongoDB Database, which stays in sync via WebSockets.</li>
+                        <li>2. All code (server and client) is written in pure JavaScript.</li>
+                        <li>3. All the same APIs are available on the client and the server — including database APIs! — so the same code can easily run in either environment.</li>
+                    </ul>
+                   
+                    <p><strong>
+                        Cool things ...
+                    	</strong>
+                    </p>
+                    <ul>
+                        <li>1. All WebSockets. So no REST endpoints. So no wait and redraw.</li>
+                        <li>2. Templates are bound to data so they all auto update.</li>
+                        <li>3. When a user makes a change, their screen updates immediately — no waiting for the server. If the server rejects their request or executes it differently, the client is patched up with what actually happened.</li>
+                    </ul>
+                    
+                    <p><strong>
+                        What is this good for?</strong>
+                    </p>
+                    <ul>
+                        <li>Any application that would be enhanced by users being able to see updates, or communicate in realitime. Leaderboards, analytics, charts, contests, chat and multi player games come to mind.</li>
+                    </ul>
+                    <br>
+                    <p>
+                        Thank you for checking out.<br>
+                        <a href="mailto:cole.peterson@possible.com">cole.peterson@possible.com</a>
+                    </p>
+                </div>
+               
+            </div>
+        </div>
+    </div>
 </body>

@@ -2,7 +2,11 @@
  <div class='section-title row big vert-ten-btm'>PlayList</div>
     <div class="videos">
         <div class="row">
-            {{#each videos}} {{>VideoItem}} {{/each}}
+            {{#if videos.count}}
+                {{#each videos}} {{>VideoItem}} {{/each}}
+            {{else}}
+                <p class="panel-body">There are no videos in the playlist. Can you SEARCH and add one?</p>
+            {{/if}}
         </div>
     </div>
 </template>

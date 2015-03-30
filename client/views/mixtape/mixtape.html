@@ -13,18 +13,12 @@
                         {{/if}}
                     </div>
                     {{#if video}}
-                    <button class="btn btn-primary btn-hate btn-rate pull-right progress-bar-danger"><span class="glyphicon glyphicon-thumbs-down"></span>
+                    <button class="btn btn-hate btn-rate pull-right progress-bar-danger"><span class="glyphicon glyphicon-thumbs-down"></span>
                     </button>
-                    <button class="btn btn-primary btn-like btn-rate pull-right progress-bar-success"><span class="glyphicon glyphicon-thumbs-up"></span>
+                    <button class="btn btn-like btn-rate pull-right progress-bar-success"><span class="glyphicon glyphicon-thumbs-up"></span>
                     </button>
                     {{/if}}
                 </div>
-                <!--
-                 {{#if Template.subscriptionsReady}}
-                  {{else}}
-                    Loading…
-                  {{/if}} 
-                -->
                 {{>videoInfo}}
                 <div class="videoWrapper row">
                     <div id="playerCover"></div>

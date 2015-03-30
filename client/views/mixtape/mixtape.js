@@ -54,10 +54,12 @@ Template.mixtape.helpers({
 /*****************************************************************************/
 Template.mixtape.onCreated(function() {
     var self = this;
+    console.log('on created')
     // When this template is used, get the data we need.
-    self.autorun(function() {
+    //self.autorun(function() {
         var rm = Rooms.findOne({});
         if (!rm){
+            //this should never run after 1 room is created.
             App.helpers.createRoom();
         }else if (!rm.ownerId && Meteor.user()){
             Rooms.update({_id: rm._id}, {$set: {ownerId: Meteor.user()._id}});
@@ -74,10 +76,12 @@ Template.mixtape.onCreated(function() {
                 Session.set("isRoomOwner", Rooms.findOne({}).ownerId === Meteor.user()._id );
             });
         });
-    });
+   // });
 });
 
 Template.mixtape.rendered = function() {
+
+    console.log("we have rendered");
 
     var handleRoom = Rooms.find({}).observeChanges({
         
@@ -87,7 +91,7 @@ Template.mixtape.rendered = function() {
                 //video has chnaged. load the next one.
                 player.loadVideoById(fields.videoId, 1);
                 sAlert.closeAll();
-                App.helpers.setRoomAlert('New song added by ' + Videos.findOne({}).userName + " !");
+                App.helpers.setRoomAlert('New song added by ' + Videos.findOne({}).userName + "!");
             }
 
             if (fields.like) {
@@ -132,7 +136,7 @@ Template.mixtape.rendered = function() {
         player = new YT.Player("player", {
             playerVars: {
                 'modestbranding': 1,
-                'controls': 0,
+                'controls': 1,
                 'autohide': 0,
                 'autoplay': 1,
                 'showinfo': 0
@@ -141,6 +145,8 @@ Template.mixtape.rendered = function() {
             events: {
                 onReady: function(event) {
                     
+                    startTrackPlayerTime();
+
                     if (!Meteor.user() || !Session.get("isRoomOwner")) {
                         //if NOT logged in.... or not the room owner update playhead.
                         adjustPlayhead();
@@ -229,20 +235,21 @@ function removeVideoAndLoad() {
 
 
 ///////////////////////////////////////////////////
+function startTrackPlayerTime(){
+    setInterval(function() {
 
-setInterval(function() {
+        if (!player) {
+            return
+        }
 
-    if ( !player){
-        return
-    }
-
-    //room owner updates Room with current playhead time.
-    if (Session.get("isRoomOwner")) {
-        Meteor.call('updatePlayerCurrentTime', Meteor.user()._id, player.getCurrentTime(), function(err, response) {
-           // console.log("we did it. player.getCurrentTime()" + Meteor.user()._id);
-        });
-    }
-}, 2000);
+        //room owner updates Room with current playhead time.
+        if (Session.get("isRoomOwner")) {
+            Meteor.call('updatePlayerCurrentTime', Meteor.user()._id, player.getCurrentTime(), function(err, response) {
+                // console.log("we did it. player.getCurrentTime()" + Meteor.user()._id);
+            });
+        }
+    }, 2000);
+}
 
 
 ////////////////////////////

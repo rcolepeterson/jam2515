@@ -30,7 +30,15 @@ Router.route('/mixtape', {
         return room;
     },
     action: function() {
-        this.render('mixtape');
+
+        if (this.ready()){
+            console.log('we are ready');
+            this.render('mixtape')
+        }else{
+            console.log('we are loading');
+            this.render('Loading');
+        }
+        //this.render('mixtape');
     }
 });
 
