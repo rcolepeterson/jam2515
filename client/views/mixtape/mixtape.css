@@ -16,6 +16,11 @@
     z-index: 99999;
     display:block;
 }
+@media (max-width: 420px){
+   #playerCover{
+    display: none;
+   } 
+}
 
 .section{
     margin-right: 5px;
