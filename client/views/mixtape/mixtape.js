@@ -1,5 +1,7 @@
+var mytimer,player;
+
 /*****************************************************************************/
-/* mixtape: Event Handlers and Helpersss .js*/
+/* mvar ixtape: Event Handlers and Helpersss .js*/
 /*****************************************************************************/
 Template.mixtape.events({
     'click .btn-like': function(e, tmpl) {
@@ -151,6 +153,22 @@ Template.mixtape.rendered = function() {
                     if (evt.data == YT.PlayerState.ENDED) {
                        removeVideoAndLoad();
                     }
+                    //
+                    if (evt.data == YT.PlayerState.PLAYING) {
+
+                          $('#myprogressBar').show();
+                            var playerTotalTime = player.getDuration();
+                            mytimer = setInterval(function() {
+                            var playerCurrentTime = player.getCurrentTime();
+                            var playerTimeDifference = (playerCurrentTime / playerTotalTime) * 100;
+                            progress(playerTimeDifference, $('#myprogressBar'));
+                          }, 1000);        
+                        } else {
+                          
+                          clearTimeout(mytimer);
+                          $('#myprogressBar').hide();
+                        }
+                    
                 },
                 'onError': function(evt) {
                    App.helpers.setRoomAlert('Oh no! The video be broken!');
@@ -174,6 +192,18 @@ function adjustPlayhead()
 
     player.seekTo(Rooms.findOne({}).playerCurrentTime)
 }
+
+function progress(percent, $element) {
+  
+    console.log('progress', percent, $element)
+  var progressBarWidth = percent * $element.width() / 100;
+
+// $element.find('div').animate({ width: progressBarWidth }, 500).html(percent + "%&nbsp;");
+
+  $element.find('div').animate({ width: progressBarWidth });
+}
+
+
 
 /**
  * Removes the currently playing video and selects the next one updating the Room object video id.
