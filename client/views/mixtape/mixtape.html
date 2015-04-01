@@ -1,15 +1,15 @@
 <template name="mixtape">
     <div class="container-fluid" id="home">
         <div class="row">
-            <div class="col-xs-1">
+            <div class="col-sm-1">
                 {{#each usersOnline}} {{>userInfo}} {{/each}}
             </div>
             <div class="col-sm-5 videoPlayer info">
                 <div class='section-title videoTitle row'>
-                    <div class="col-xs-9">
+                    <div class="col-sm-9">
                         {{#if video}}
-                        <span class='selVideoTitle'>{{video.videoTitle}}</span>
-                        <p class="submittedby">Submitted by {{video.userName}}</p>
+                            <span class='selVideoTitle'>{{video.videoTitle}}</span>
+                            <p class="submittedby">Submitted by {{video.userName}}</p>
                         {{/if}}
                     </div>
                     {{#if video}}
@@ -35,6 +35,10 @@
         </div>
     </div>
 </template>
+
+
+
+
 <template name="userInfo">
     <div class="row">
         <img class="center-block onlineUserImage" src="{{profile.picture}}">
@@ -44,7 +48,6 @@
     {{#if video}}
     <div class="progress row">
         <div class="progress-bar progress-bar-success" role="progressbar" style="width: {{percentageLiked}}%;">
-           
         </div>
     </div>
     {{/if}}

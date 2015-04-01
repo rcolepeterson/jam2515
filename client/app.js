@@ -26,7 +26,12 @@ App.helpers.changeRoomOwner = function ()
     if (newOwner) {
         newOwnerId = newOwner._id;
     }
-    var update = Rooms.update({_id: roomId}, {$set: {ownerId: newOwnerId}});
+    //var update = Rooms.update({_id: roomId}, {$set: {ownerId: newOwnerId}});
+    Meteor.call('updateRoomOwner', newOwnerId, function (error, result) {
+        if (error){
+            console.error(error);
+        }
+    });
 }
 
 /**
@@ -47,6 +52,7 @@ App.helpers.displayAlert = function(str,val)
 
 App.helpers.displayAlertInfo = function(str,val)
 {
+
     sAlert.info(str, {
         effect: 'stackslide',
         position: 'right-bottom',
@@ -54,10 +60,11 @@ App.helpers.displayAlertInfo = function(str,val)
     });
 }
 
-App.helpers.setRoomAlert = function(str,val)
+App.helpers.setRoomAlert = function(str)
 {
-    var roomId = Rooms.findOne({})._id;
-    Rooms.update({_id: roomId}, {$set: {alert: str}});
+    Meteor.call('setRoomAlert', str, function (error, result) {
+        //console.log('err0r',error,'result',result);
+    });
 }
 
 

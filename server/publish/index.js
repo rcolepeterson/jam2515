@@ -70,40 +70,43 @@ Meteor.publish('rooms', function () {
 	return Rooms.find();
 });
 
-/*
- *  
- *  Room - allow / deny
- * 
- */
+// /*
+//  *  
+//  *  Room - allow / deny
+//  * 
+//  */
 Rooms.allow({
   insert: function (userId, doc) {
     return true;
   },
 
-  update: function (userId, doc, fieldNames, modifier) {
+  // update: function (userId, doc, fieldNames, modifier) {
     
-    //console.log(' we are trying to update: ' + userId + " fieldNames " + fieldNames);
-    return true;
-  },
+  //   //console.log(' we are trying to update: ' + userId + " fieldNames " + fieldNames);
+  //   //console.log(fieldNames);
+  //   //return _.contains(fieldNames,'like') || _.contains(fieldNames,'alert');
+  //   return true;
+
+  // },
 
   remove: function (userId, doc) {
     return true;
   }
 });
 
-Rooms.deny({
-  insert: function (userId, doc) {
-    return false;
-  },
+// Rooms.deny({
+//   insert: function (userId, doc) {
+//     return false;
+//   },
 
-  update: function (userId, doc, fieldNames, modifier) {
-    return false;
-  },
+//   update: function (userId, doc, fieldNames, modifier) {
+//     return false;
+//   },
 
-  remove: function (userId, doc) {
-    return false;
-  }
-});
+//   remove: function (userId, doc) {
+//     return false;
+//   }
+// });
 
 
 /*****************************************************************************/

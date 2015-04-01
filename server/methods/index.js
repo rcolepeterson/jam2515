@@ -9,55 +9,51 @@ Meteor.methods({
     },
 
     removeOneVideo: function(_id) {
-        //console.log('Server: We are removing', _id)
-        return Videos.remove({
-            videoId: _id
-        });
+        return Videos.remove({videoId: _id});
     },
+
     removeUser: function(_id) {
         return Meteor.users.remove(_id);
     },
+
     removeallRooms: function() {
         return Rooms.remove({});
     },
+
     updatePlayerCurrentTime: function(_id, playerCurrentTime) {
-        Rooms.update({
-            ownerId: _id
-        }, {
-            $set: {
-                playerCurrentTime: playerCurrentTime
-            }
-        }, {
-            multi: false
-        });
+        return Rooms.update({ownerId: _id}, {$set: {playerCurrentTime: playerCurrentTime}});
     },
+
     updateRoomOwner: function(_id) {
-        //console.log('updateRoomOwner: ' + _id);
-        var curRommId = Rooms.findOne({})._id;
-        Rooms.update({
-            _id: curRommId
-        }, {
-            $set: {
-                ownerId: _id
-            }
-        }, {
-            multi: false
-        });
+        var roomId = Rooms.findOne({})._id;
+        return Rooms.update({_id: roomId}, {$set: {ownerId: _id}});
     },
+
+    updateRoomLike: function(n) {
+        var roomId = Rooms.findOne({})._id;
+        return Rooms.update({_id: roomId}, {$inc: {like: n}});
+    },
+
     updateRoomVideoID: function(videoId) {
-        //console.log('updateVideoID: ' + videoId);
-        var curRommId = Rooms.findOne({})._id;
-        //console.log('curRommId ' + curRommId)
-        Rooms.update({
-            _id: curRommId
-        }, {
-            $set: {
-                videoId: videoId
-            }
-        }, {
-            multi: false
+        var roomId = Rooms.findOne({})._id;
+        var c = Rooms.update({_id: roomId}, {$set: {videoId: videoId, like: 3}},function(err,result){
+            return result;
         });
     },
+    
+    setRoomAlert: function(str) {
+     var roomId = Rooms.findOne({})._id;
+     Rooms.update({_id: roomId}, {$set: {alert: str}},
+         function(error, result) {
+             if (error) {
+                 throw new Meteor.Error(500, error.message);
+             } else {
+                 return result;
+             }
+         }
+     );
+ },
+
     /**
      * [newVideo description]
      * @param  {[type]} userId          [description]
@@ -81,18 +77,10 @@ Meteor.methods({
             function(err, id) {
                 var roomId = Rooms.findOne()._id;
                 var count = Videos.find({}).count();
-                var insertedvideo = Videos.findOne({
-                    _id: id
-                });
+                var insertedvideo = Videos.findOne({_id: id});
                 //we just inserted the 1st video. update the Rooms obj which will start the player.
                 if (count === 1) {
-                    Rooms.update({
-                        _id: roomId
-                    }, {
-                        $set: {
-                            videoId: insertedvideo.videoId
-                        }
-                    }, function(err) {});
+                    Rooms.update({_id: roomId}, {$set: { videoId: insertedvideo.videoId, like:3}}, function(err) {});
                 }
             });
     },
@@ -102,12 +90,7 @@ Meteor.methods({
      * @param {string} avatar [path to image]
      */
     setUserPic: function setUserPic(avatar) {
-        return Meteor.users.update({
-            _id: CurrentUserId
-        }, {
-            $set: {
-                'profile.picture': avatar
-            }
+        return Meteor.users.update({_id: CurrentUserId}, {$set: {'profile.picture': avatar}
         });
     }
 });

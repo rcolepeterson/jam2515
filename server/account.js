@@ -21,16 +21,17 @@ Accounts.onCreateUser(function(options, user) {
         user.profile = options.profile;
     }
 
-    Meteor.call('setUserPic', options.profile.picture, function(error, result) {});
+    //Meteor.call('setUserPic', options.profile.picture, function(error, result) {});
 
     return user;
 });
 
 Accounts.onLogin(function(options, user) {
 
-    // var hasPic = Meteor.users.find({_id: CurrentUserId}).profile.picture;
-
-    // console.log(hasPic.count + 'onLogin',CurrentUserId);
+        //var hasPic = Meteor.users.find({_id: CurrentUserId}).profile.picture;
+        // var rm = Rooms.findOne({});
+        // var usersCount = Meteor.users.find({_id:rm._id, "status.online": true}).count();
+        // console.log("Accounts.onLogin: usersCount ",usersCount);
     // //
     // var picture = "//fillmurray.com/50/50";
 

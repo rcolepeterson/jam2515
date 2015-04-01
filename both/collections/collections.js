@@ -1,4 +1,4 @@
-Videos = new Meteor.Collection('videos');
-Messages = new Meteor.Collection('messages');
+Videos = new Mongo.Collection('videos');
+Messages = new Mongo.Collection('messages');
 Rooms = new Mongo.Collection('rooms');
 

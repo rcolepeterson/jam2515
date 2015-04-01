@@ -12,11 +12,8 @@ Template.mixtape.events({
             return false
         }
 
-        Rooms.update({_id: this._id}, {
-            $inc: {like: 1}
-        });
+        Meteor.call('updateRoomLike', 1, function (error, result) {});
         //$('#content-container .btn-like').attr('disabled', true);
-
         App.helpers.setRoomAlert(App.helpers.getUserName() + ' just liked this video.');
     },
 
@@ -26,9 +23,7 @@ Template.mixtape.events({
            App.helpers.displayAlert('Hey! You must be logged in to hate on a video!');
             return;
         }
-        Rooms.update({_id: this._id}, {
-            $inc: {like: -1}
-        });
+        Meteor.call('updateRoomLike', -1, function (error, result) {});
         //$('#content-container .btn-hate').attr('disabled', true);
         username = App.helpers.getUserName();
         App.helpers.setRoomAlert(username + ' just dissed this video.');
@@ -54,50 +49,48 @@ Template.mixtape.helpers({
 /*****************************************************************************/
 Template.mixtape.onCreated(function() {
     var self = this;
-    console.log('on created')
-    // When this template is used, get the data we need.
-    //self.autorun(function() {
-        var rm = Rooms.findOne({});
-        if (!rm){
-            //this should never run after 1 room is created.
-            App.helpers.createRoom();
-        }else if (!rm.ownerId && Meteor.user()){
-            Rooms.update({_id: rm._id}, {$set: {ownerId: Meteor.user()._id}});
-        }
+    var rm = Rooms.findOne({});
+    if (!rm){
+        //this should never run after 1 room is created.
+        App.helpers.createRoom();
+    }else if (!rm.ownerId && Meteor.user()){
+        //if we do NOT have a room owner but we do have 1 logged in user
+        Meteor.call('updateRoomOwner', Meteor.user()._id, function (error, result) {});
+    }
 
-        self.subscribe("rooms", function(){
-            //reactivly track who the room owner is.
-            Tracker.autorun(function () {
-                if (!Meteor.user() )
-                {
-                    Session.set("isRoomOwner", false);
-                    return;
-                }
-                Session.set("isRoomOwner", Rooms.findOne({}).ownerId === Meteor.user()._id );
-            });
+    self.subscribe("rooms", function(){
+        //reactively track who the room owner is.
+        Tracker.autorun(function () {
+            if (!Meteor.user() )
+            {
+                //if this user is not logged in ....
+                Session.set("isRoomOwner", false);
+                return;
+            }
+            Session.set("isRoomOwner", Rooms.findOne({}).ownerId === Meteor.user()._id );
         });
-   // });
+    });
 });
 
 Template.mixtape.rendered = function() {
-
-    console.log("we have rendered");
-
     var handleRoom = Rooms.find({}).observeChanges({
         
         changed: function(id, fields) {
-            
             if (fields.videoId) {
-                //video has chnaged. load the next one.
+                //video has changed. load the next one.
                 player.loadVideoById(fields.videoId, 1);
+                //close any alert.
                 sAlert.closeAll();
-                App.helpers.setRoomAlert('New song added by ' + Videos.findOne({}).userName + "!");
+                //alert
+                App.helpers.setRoomAlert('Playing a new song that was added by ' + Videos.findOne({}).userName + "!");
             }
 
             if (fields.like) {
                 //user has modifed like. load new video if ...
-                if (Number(fields.like) < 1) {
+                if (fields.like < 1) {
+                    //player.seekTo(player.getDuration());
                     removeVideoAndLoad();
+                    return;
                 }
             }
 
@@ -113,9 +106,9 @@ Template.mixtape.rendered = function() {
 
             if (fields.alert){
                 App.helpers.displayAlert(fields.alert);
-                //reset.
+                //reset the Room alert value.
                 var roomId = Rooms.findOne({})._id;
-                Rooms.update({_id: roomId}, {$set: {alert: ''}});
+                App.helpers.setRoomAlert("");
             }
         }
     });
@@ -136,7 +129,7 @@ Template.mixtape.rendered = function() {
         player = new YT.Player("player", {
             playerVars: {
                 'modestbranding': 1,
-                'controls': 1,
+                'controls': 0,
                 'autohide': 0,
                 'autoplay': 1,
                 'showinfo': 0
@@ -188,51 +181,33 @@ function adjustPlayhead()
  */
 function removeVideoAndLoad() {
 
-    
     if ( Meteor.users.find({"status.online": true}).count() < 1) {
         App.helpers.displayAlertInfo('No users are logged in so we have to stop until someone signs in');
         return;
     }
-    var myid = Rooms.findOne({}).videoId;
-    var videoID = Videos.findOne({});
+    var roomVideoId = Rooms.findOne({}).videoId, video = Videos.findOne({});
 
-    //only run if this user is the room owner.
-    if (!Session.get("isRoomOwner")){
-        
+    if ( !roomVideoId || !video){
+        App.helpers.displayAlertInfo('Oh no! There are no more videos in the playlist. Can you SEARCH and add one?');
+    }
 
-        if ( !myid || !videoID){
-            App.helpers.displayAlertInfo('Oh no! There are no more videos in the playlist. Can you SEARCH and add one?');
-        }
-
+    if ( Session.get("isRoomOwner")){
+        player.stopVideo();
+    }else{
         adjustPlayhead();
         return;
     }
-
-    if ( !myid || !videoID){
-        player.stopVideo();
-        App.helpers.displayAlertInfo('Oh no! There are no more videos in the playlist. Can you SEARCH and add one?');
-        return;
-    }
-
     //Make server side call to remove the current vidoo. on call back load the next one.
-    Meteor.call('removeOneVideo', myid, function(error, result) {
-        var roomId = Rooms.findOne({})._id;
-        Rooms.update({_id: roomId}, {$set: {like: 3, playerCurrentTime:0}});
-
+    Meteor.call('removeOneVideo', roomVideoId, function(error, result) {
+        
         var video = Videos.findOne({});
         if (!video){
             App.helpers.displayAlertInfo('Oh no! There are no more videos in the playlist. Can you SEARCH and add one?');
             return;
         }
-        var videoId = video.videoId;
-        //$('#content-container .btn-rate').attr('disabled', false);
-        Rooms.update({_id: roomId}, {$set: {videoId: videoId}}, function (error) {
-            if ( error )
-            console.warn('removeOneVideo > Rooms.update error');
-        });
+        Meteor.call('updateRoomVideoID', video.videoId, function (error, result) {});
     });
 }
-
 
 ///////////////////////////////////////////////////
 function startTrackPlayerTime(){
@@ -272,6 +247,12 @@ if (Meteor.isClient) {
             }
 
            App.helpers.setRoomAlert(username + ' just joined the party!', true);
+           var rm = Rooms.findOne({});
+
+            //if the Room ownerID is not online update.
+            if ( Meteor.users.find({_id:rm.ownerId, "status.online": true}).count() < 1){
+                App.helpers.changeRoomOwner();
+            }
         },
         removed: function(user) {
 
@@ -306,7 +287,6 @@ Template.videoInfo.onCreated(function() {
 
         Meteor.subscribe("userStatus", function() {
             //Callback fired when data received
-            var oneUser = Meteor.users.find({"status.online": true}).count();
             var rm = Rooms.findOne({});
             //if the Room ownerID is not online update.
             if ( Meteor.users.find({_id:rm.ownerId, "status.online": true}).count() < 1){

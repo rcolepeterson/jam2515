@@ -16,3 +16,7 @@
 #myModal > div > div > div.modal-header{
     height: 50px !important;
 }
+
+.nav.navbar-nav.navbar-right{
+	margin-right:10px;
+}
