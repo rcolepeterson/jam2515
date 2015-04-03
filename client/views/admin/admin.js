@@ -27,6 +27,11 @@ Template.admin.events({
             }
         });
     },
+    'click .testUpdatePlayBack': function(e,tmpl)
+    {
+        console.log('update to ',$('#test-playback-input').val());
+        Meteor.call('updatePlayerCurrentTime', Number($('#test-playback-input').val()), function (error, result) {});
+    },
 
     'click .btn-StopBeOwner': function(e, tmpl) {
         var roomId = Rooms.findOne({})._id;

@@ -20,8 +20,9 @@ Meteor.methods({
         return Rooms.remove({});
     },
 
-    updatePlayerCurrentTime: function(_id, playerCurrentTime) {
-        return Rooms.update({ownerId: _id}, {$set: {playerCurrentTime: playerCurrentTime}});
+    updatePlayerCurrentTime: function(playerCurrentTime) {
+        var roomId = Rooms.findOne({})._id;
+        return Rooms.update({_id:roomId}, {$set: {playerCurrentTime: playerCurrentTime}});
     },
 
     updateRoomOwner: function(_id) {

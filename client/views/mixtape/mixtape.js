@@ -1,4 +1,4 @@
-var mytimer,player;
+
 
 /*****************************************************************************/
 /* mvar ixtape: Event Handlers and Helpersss .js*/
@@ -15,7 +15,6 @@ Template.mixtape.events({
         }
 
         Meteor.call('updateRoomLike', 1, function (error, result) {});
-        //$('#content-container .btn-like').attr('disabled', true);
         App.helpers.setRoomAlert(App.helpers.getUserName() + ' just liked this video.');
     },
 
@@ -26,9 +25,7 @@ Template.mixtape.events({
             return;
         }
         Meteor.call('updateRoomLike', -1, function (error, result) {});
-        //$('#content-container .btn-hate').attr('disabled', true);
-        username = App.helpers.getUserName();
-        App.helpers.setRoomAlert(username + ' just dissed this video.');
+        App.helpers.setRoomAlert(App.helpers.getUserName() + ' just dissed this video.');
     }
 });
 
@@ -50,7 +47,7 @@ Template.mixtape.helpers({
 /* mixtape: Lifecycle Hooks */
 /*****************************************************************************/
 Template.mixtape.onCreated(function() {
-    var self = this;
+    var self = this, mytimer,player;
     var rm = Rooms.findOne({});
     if (!rm){
         //this should never run after 1 room is created.
@@ -100,18 +97,37 @@ Template.mixtape.rendered = function() {
                 //We are changing the owner id.
                 if (!Meteor.user() || !Session.get("isRoomOwner")) {
                     //if not logged in or user is not the room owner .... get the current playhead time and apply.
-                    var seconds = Rooms.findOne({}).playerCurrentTime;
-                    player.seekTo(seconds)
+                    //var seconds = Rooms.findOne({}).playerCurrentTime;
+                    //player.seekTo(seconds)
+                    adjustPlayhead();
                     return;
                 }
             }
 
             if (fields.alert){
+                //display alert.
                 App.helpers.displayAlert(fields.alert);
                 //reset the Room alert value.
-                var roomId = Rooms.findOne({})._id;
                 App.helpers.setRoomAlert("");
             }
+
+            if (fields.playerCurrentTime){
+                console.log('player time has been updated', fields.playerCurrentTime);
+                var curPlayTime = Number(fields.playerCurrentTime);
+                var playerTime = Number(player.getCurrentTime());
+                var diff = Math.abs(curPlayTime - playerTime);
+                console.log('diff',diff);
+                if ( diff > 10)
+                {
+                    if ( !Session.get("isRoomOwner")){
+                        //if not the room owner adjust the player time.
+                        console.log("diff tooo great. we will adjust they playhead!");
+                        adjustPlayhead();
+                    }
+                }
+            }
+
+
         }
     });
     
@@ -131,7 +147,7 @@ Template.mixtape.rendered = function() {
         player = new YT.Player("player", {
             playerVars: {
                 'modestbranding': 1,
-                'controls': 0,
+                'controls': 1,
                 'autohide': 0,
                 'autoplay': 1,
                 'showinfo': 0
@@ -140,7 +156,7 @@ Template.mixtape.rendered = function() {
             events: {
                 onReady: function(event) {
                     
-                    startTrackPlayerTime();
+                  //  startTrackPlayerTime();
 
                     if (!Meteor.user() || !Session.get("isRoomOwner")) {
                         //if NOT logged in.... or not the room owner update playhead.
@@ -153,15 +169,15 @@ Template.mixtape.rendered = function() {
                     if (evt.data == YT.PlayerState.ENDED) {
                        removeVideoAndLoad();
                     }
-                    //
+                    //for custom playback progress bar.
                     if (evt.data == YT.PlayerState.PLAYING) {
 
-                          $('#myprogressBar').show();
-                            var playerTotalTime = player.getDuration();
-                            mytimer = setInterval(function() {
-                            var playerCurrentTime = player.getCurrentTime();
-                            var playerTimeDifference = (playerCurrentTime / playerTotalTime) * 100;
-                            progress(playerTimeDifference, $('#myprogressBar'));
+                            $('#myprogressBar').show();
+                                var playerTotalTime = player.getDuration();
+                                mytimer = setInterval(function() {
+                                var playerCurrentTime = player.getCurrentTime();
+                                var playerTimeDifference = (playerCurrentTime / playerTotalTime) * 100;
+                                progress(playerTimeDifference, $('#myprogressBar'));
                           }, 1000);        
                         } else {
                           
@@ -189,13 +205,13 @@ function adjustPlayhead()
     {
         return;
     }
-
+    console.log("adjustPlayhead: I just audjusted my playhead", Rooms.findOne({}).playerCurrentTime);
     player.seekTo(Rooms.findOne({}).playerCurrentTime)
 }
 
 function progress(percent, $element) {
   
-    console.log('progress', percent, $element)
+   // console.log('progress', percent, $element)
   var progressBarWidth = percent * $element.width() / 100;
 
 // $element.find('div').animate({ width: progressBarWidth }, 500).html(percent + "%&nbsp;");
@@ -240,21 +256,21 @@ function removeVideoAndLoad() {
 }
 
 ///////////////////////////////////////////////////
-function startTrackPlayerTime(){
-    setInterval(function() {
+// function startTrackPlayerTime(){
+//     setInterval(function() {
 
-        if (!player) {
-            return
-        }
+//         if (!player) {
+//             return
+//         }
 
-        //room owner updates Room with current playhead time.
-        if (Session.get("isRoomOwner")) {
-            Meteor.call('updatePlayerCurrentTime', Meteor.user()._id, player.getCurrentTime(), function(err, response) {
-                // console.log("we did it. player.getCurrentTime()" + Meteor.user()._id);
-            });
-        }
-    }, 2000);
-}
+//         //room owner updates Room with current playhead time.
+//         if (Session.get("isRoomOwner")) {
+//             Meteor.call('updatePlayerCurrentTime', Meteor.user()._id, player.getCurrentTime(), function(err, response) {
+//                 // console.log("we did it. player.getCurrentTime()" + Meteor.user()._id);
+//             });
+//         }
+//     }, 2000);
+// }
 
 
 ////////////////////////////
@@ -271,7 +287,7 @@ if (Meteor.isClient) {
             if (user.username){
                 username = user.username;
             }
-             //hack for twitter. @todo - figure out.
+            //hack for twitter. @todo - figure out.
             if (user.profile.name){
                 username = user.profile.name;
             }
@@ -279,10 +295,19 @@ if (Meteor.isClient) {
            App.helpers.setRoomAlert(username + ' just joined the party!', true);
            var rm = Rooms.findOne({});
 
-            //if the Room ownerID is not online update.
+            //if the Room ownerID is not online ... update the room owner.
             if ( Meteor.users.find({_id:rm.ownerId, "status.online": true}).count() < 1){
                 App.helpers.changeRoomOwner();
+                return;
             }
+
+            if ( Session.get("isRoomOwner") && typeof player !== 'undefined'){
+                Meteor.call('updatePlayerCurrentTime', player.getCurrentTime(), function(err, response) {
+                    console.log("updatePlayerCurrentTime: we did it. player.getCurrentTime:" + player.getCurrentTime());
+                });
+            }
+
+
         },
         removed: function(user) {
 
