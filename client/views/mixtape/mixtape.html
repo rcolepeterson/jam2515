@@ -7,10 +7,14 @@
             <div class="col-sm-5 videoPlayer info">
                 <div class='section-title videoTitle row'>
                     <div class="col-sm-9">
+                        <div class="row">
                         {{#if video}}
                             <span class='selVideoTitle'>{{video.videoTitle}}</span>
                             <p class="submittedby">Submitted by {{video.userName}}</p>
+                            {{else}}
+                            <p>No video selected. Will you add one?</p>
                         {{/if}}
+                        </div>
                     </div>
                     {{#if video}}
                     <button class="btn btn-hate btn-rate pull-right progress-bar-danger"><span class="glyphicon glyphicon-thumbs-down"></span>
@@ -31,10 +35,10 @@
                 </div>
                 {{>message}}
             </div>
-            <div class="playlist section col-sm-2">
+            <div class="col-sm-2 playlist section">
                 {{>Videos}}
             </div>
-            <div class="search col-sm-3">
+            <div class="col-sm-3 search">
                 {{>admin}} {{>Submit}}
             </div>
         </div>

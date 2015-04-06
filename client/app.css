@@ -2,11 +2,12 @@
 /* Global CSS Styles */
 /*****************************************************************************/
 
-html, body {
+html,
+body {
     width: 100%;
     height: 100%;
-    min-height:100%;/* make sure it is at least as tall as the viewport */
-    position:relative;
+    min-height: 100%;
+    position: relative;
     font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
     background: #222222;
     color: #fff;
@@ -14,8 +15,9 @@ html, body {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-@media screen and (max-width: 420px){
-    html, body {
+@media screen and (max-width: 420px) {
+    html,
+    body {
         background: #000;
     }
 }
@@ -28,7 +30,12 @@ ul {
     list-style-type: none;
 }
 
-.btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn.active.focus{
+.btn:focus,
+.btn:active:focus,
+.btn.active:focus,
+.btn.focus,
+.btn:active.focus,
+.btn.active.focus {
     outline: 0;
 }
 
@@ -44,8 +51,7 @@ ul {
     border: 2px solid #222;
     color: #ccc;
 }
+
 .buttonOutline:hover {
     color: #fff;
 }
-
-

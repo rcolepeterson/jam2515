@@ -6,17 +6,16 @@
     background-color: #373737;
     border-color: #080808;
 }
-
-
-#myModal > div{
-    color:#000 !important;
-    font-size: 12px;
-}
-
-#myModal > div > div > div.modal-header{
-    height: 50px !important;
-}
-
 .nav.navbar-nav.navbar-right{
 	margin-right:10px;
+}
+div.modal-header{
+	color:#000 !important;
+}
+div.modal-body {
+    color:#000 !important;
+   /* font-size: 12px;*/
+}
+div.modal-header{
+    height: 50px !important;
 }
