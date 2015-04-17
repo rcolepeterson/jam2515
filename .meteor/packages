@@ -8,7 +8,6 @@ meteor-platform
 iron:router
 twbs:bootstrap
 ian:accounts-ui-bootstrap-3
-accounts-password
 accounts-twitter
 accounts-facebook
 infinitedg:gsap
@@ -18,3 +17,5 @@ reactive-dict
 juliancwirko:s-alert
 mizzao:user-status
 multiply:iron-router-progress
+email
+accounts-google

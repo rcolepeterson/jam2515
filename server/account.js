@@ -12,11 +12,16 @@ Accounts.onCreateUser(function(options, user) {
             options.profile.picture = user.services.twitter.profile_image_url;
         }
 
-        if (!options.profile.picture) {
-            var email = user.emails[0].address;
-            user.username = email.substring(0, email.indexOf("@"));
-            options.profile.picture = "//fillmurray.com/50/50";
+        if (user.services.google) {
+            user.username = user.services.google.name;
+            options.profile.picture = user.services.google.picture;
         }
+
+        // if (!options.profile.picture) {
+        //     var email = user.emails[0].address;
+        //     user.username = email.substring(0, email.indexOf("@"));
+        //     options.profile.picture = "//fillmurray.com/50/50";
+        // }
 
         user.profile = options.profile;
     }

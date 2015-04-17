@@ -1,7 +1,10 @@
-#home {
+#home, .topMmrgin {
     margin-top: 70px;
 }
-/*
+
+
+
+
 #home > div > div.col-sm-5.videoPlayer.info > div.videoWrapper.row {
     position: relative;
 }
@@ -15,7 +18,7 @@
     bottom: 0;
     right: 0;
     z-index: 99999;
-    display: none;
+    display: block;
 }
 
 @media (max-width: 420px) {
@@ -23,7 +26,7 @@
         display: none;
     }
 }
-
+/*
 .section {
     margin-right: 5px;
     margin-left: 5px;
@@ -137,6 +140,13 @@
     margin-bottom: 5px;
 }
 
+*/
+
+.onlineUserImage {
+    margin-bottom: 5px;
+    max-width: 50px;
+}
+
 #myprogressBar {
     width: 100%;
     height: 10px;
@@ -150,4 +160,3 @@
     width: 0;
     background-color: gray;
 }
-*/

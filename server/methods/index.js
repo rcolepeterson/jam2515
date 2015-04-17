@@ -54,6 +54,20 @@ Meteor.methods({
          }
      );
  },
+    setRoomAlertInfo: function(str) {
+
+     //console.log('setRoomAlertInfo: ',str);
+     var roomId = Rooms.findOne({})._id;
+     Rooms.update({_id: roomId}, {$set: {alertInfo: str}},
+         function(error, result) {
+             if (error) {
+                 throw new Meteor.Error(500, error.message);
+             } else {
+                 return result;
+             }
+         }
+     );
+ },
 
     /**
      * [newVideo description]

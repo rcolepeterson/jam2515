@@ -57,6 +57,8 @@ Template.mixtape.onCreated(function() {
         Meteor.call('updateRoomOwner', Meteor.user()._id, function (error, result) {});
     }
 
+    App.helpers.setRoomAlertInfo("");
+
     self.subscribe("rooms", function(){
         //reactively track who the room owner is.
         Tracker.autorun(function () {
@@ -99,7 +101,9 @@ Template.mixtape.rendered = function() {
                     //if not logged in or user is not the room owner .... get the current playhead time and apply.
                     //var seconds = Rooms.findOne({}).playerCurrentTime;
                     //player.seekTo(seconds)
-                    adjustPlayhead();
+                    if (adjustPlayhead ){
+                        adjustPlayhead();
+                    }
                     return;
                 }
             }
@@ -111,17 +115,27 @@ Template.mixtape.rendered = function() {
                 App.helpers.setRoomAlert("");
             }
 
+            if (fields.alertInfo){
+
+                //console.log('fields.alertInfo: ');
+
+                //display alert.
+                App.helpers.displayAlertInfo(fields.alertInfo);
+                //reset the Room alert value.
+                App.helpers.setRoomAlertInfo("");
+            }
+
             if (fields.playerCurrentTime){
-                console.log('player time has been updated', fields.playerCurrentTime);
+                //console.log('player time has been updated', fields.playerCurrentTime);
                 var curPlayTime = Number(fields.playerCurrentTime);
                 var playerTime = Number(player.getCurrentTime());
                 var diff = Math.abs(curPlayTime - playerTime);
-                console.log('diff',diff);
+                //console.log('diff',diff);
                 if ( diff > 10)
                 {
                     if ( !Session.get("isRoomOwner")){
                         //if not the room owner adjust the player time.
-                        console.log("diff tooo great. we will adjust they playhead!");
+                       // console.log("diff tooo great. we will adjust they playhead!");
                         adjustPlayhead();
                     }
                 }
@@ -147,7 +161,7 @@ Template.mixtape.rendered = function() {
         player = new YT.Player("player", {
             playerVars: {
                 'modestbranding': 1,
-                'controls': 1,
+                'controls': 0,
                 'autohide': 0,
                 'autoplay': 1,
                 'showinfo': 0
@@ -156,7 +170,7 @@ Template.mixtape.rendered = function() {
             events: {
                 onReady: function(event) {
                     
-                  //  startTrackPlayerTime();
+                   // startTrackPlayerTime();
 
                     if (!Meteor.user() || !Session.get("isRoomOwner")) {
                         //if NOT logged in.... or not the room owner update playhead.
@@ -205,7 +219,7 @@ function adjustPlayhead()
     {
         return;
     }
-    console.log("adjustPlayhead: I just audjusted my playhead", Rooms.findOne({}).playerCurrentTime);
+    //console.log("adjustPlayhead: I just audjusted my playhead", Rooms.findOne({}).playerCurrentTime);
     player.seekTo(Rooms.findOne({}).playerCurrentTime)
 }
 
@@ -248,7 +262,7 @@ function removeVideoAndLoad() {
         
         var video = Videos.findOne({});
         if (!video){
-            App.helpers.displayAlertInfo('Oh no! There are no more videos in the playlist. Can you SEARCH and add one?');
+            App.helpers.setRoomAlertInfo('Oh no! There are no more videos in the playlist. Can you SEARCH and add one?');
             return;
         }
         Meteor.call('updateRoomVideoID', video.videoId, function (error, result) {});
@@ -303,7 +317,7 @@ if (Meteor.isClient) {
 
             if ( Session.get("isRoomOwner") && typeof player !== 'undefined'){
                 Meteor.call('updatePlayerCurrentTime', player.getCurrentTime(), function(err, response) {
-                    console.log("updatePlayerCurrentTime: we did it. player.getCurrentTime:" + player.getCurrentTime());
+                   // console.log("updatePlayerCurrentTime: we did it. player.getCurrentTime:" + player.getCurrentTime());
                 });
             }
 
@@ -323,7 +337,7 @@ if (Meteor.isClient) {
 
             var r = Rooms.findOne({});
             if (r.ownerId === user._id) {
-                console.log('the owner has left the room: ' + user._id);
+               // console.log('the owner has left the room: ' + user._id);
                 //update room owner
                 App.helpers.changeRoomOwner();
             }

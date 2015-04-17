@@ -67,6 +67,13 @@ App.helpers.setRoomAlert = function(str)
     });
 }
 
+App.helpers.setRoomAlertInfo = function(str)
+{
+    Meteor.call('setRoomAlertInfo', str, function (error, result) {
+       // console.log('error: ',error,'result:',result);
+    });
+}
+
 
 App.helpers.createRoom = function() {
 
