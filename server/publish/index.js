@@ -40,26 +40,26 @@ Videos.allow({
 
   update: function (userId, doc, fieldNames, modifier) {
     return true;
-  },
-
-  remove: function (userId, doc) {
-    return true;
   }
+
+  // remove: function (userId, doc) {
+  //   return true;
+  // }
 });
 
-Videos.deny({
-  insert: function (userId, doc) {
-    return false;
-  },
+// Videos.deny({
+//   insert: function (userId, doc) {
+//     return false;
+//   },
 
-  update: function (userId, doc, fieldNames, modifier) {
-    return false;
-  },
+//   update: function (userId, doc, fieldNames, modifier) {
+//     return false;
+//   },
 
-  remove: function (userId, doc) {
-    return false;
-  }
-});
+//   remove: function (userId, doc) {
+//     return false;
+//   }
+// });
 
 
 /*****************************************************************************/
@@ -76,22 +76,22 @@ Meteor.publish('rooms', function () {
 //  * 
 //  */
 Rooms.allow({
-  insert: function (userId, doc) {
-    return true;
-  },
-
-  // update: function (userId, doc, fieldNames, modifier) {
-    
-  //   //console.log(' we are trying to update: ' + userId + " fieldNames " + fieldNames);
-  //   //console.log(fieldNames);
-  //   //return _.contains(fieldNames,'like') || _.contains(fieldNames,'alert');
+  // insert: function (userId, doc) {
   //   return true;
-
   // },
 
-  remove: function (userId, doc) {
-    return true;
-  }
+  // // update: function (userId, doc, fieldNames, modifier) {
+    
+  // //   //console.log(' we are trying to update: ' + userId + " fieldNames " + fieldNames);
+  // //   //console.log(fieldNames);
+  // //   //return _.contains(fieldNames,'like') || _.contains(fieldNames,'alert');
+  // //   return true;
+
+  // // },
+
+  // remove: function (userId, doc) {
+  //   return true;
+  // }
 });
 
 // Rooms.deny({
@@ -135,16 +135,16 @@ Messages.allow({
   }
 });
 
-Messages.deny({
-  insert: function (userId, doc) {
-    return false;
-  },
+// Messages.deny({
+//   insert: function (userId, doc) {
+//     return false;
+//   },
 
-  update: function (userId, doc, fieldNames, modifier) {
-    return false;
-  },
+//   update: function (userId, doc, fieldNames, modifier) {
+//     return false;
+//   },
 
-  remove: function (userId, doc) {
-    return false;
-  }
-});
+//   remove: function (userId, doc) {
+//     return false;
+//   }
+// });

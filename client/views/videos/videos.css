@@ -19,6 +19,10 @@
     font-size: 12px;
     color: #000;
 }
+
+.userInfo img {
+    width: 55px;
+}
 .userInfo.search {
     height: 50px;
 }

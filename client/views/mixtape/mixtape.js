@@ -24,6 +24,13 @@ Template.mixtape.events({
            App.helpers.displayAlert('Hey! You must be logged in to hate on a video!');
             return;
         }
+
+        
+        if ( dissCount() > 2){
+            App.helpers.displayAlert('You can only diss a song 3 times. Maybe someone else will cast the final diss? Message the group.');
+            return;
+        }
+
         Meteor.call('updateRoomLike', -1, function (error, result) {});
         App.helpers.setRoomAlert(App.helpers.getUserName() + ' just dissed this video.');
     }
@@ -40,8 +47,36 @@ Template.mixtape.helpers({
         return Meteor.users.find({
             "status.online": true
         })
-    }
+    },
+
+    // hateBtnDisable: function() {
+    //     var dissers = Rooms.findOne({}).dissers;
+    //     var search = Meteor.user()._id;
+    //     var count = dissers.reduce(function(n, val) {
+    //         return n + (val === search);
+    //     }, 0);
+        
+    //     return count;
+    // }
 });
+
+function dissCount() {
+    var dissers = Rooms.findOne({}).dissers;
+    var count = 0;
+    var userCount = Meteor.users.find({"status.online": true}).count();
+
+
+
+    if ( userCount > 2 && dissers instanceof Array){
+    var search = Meteor.user()._id;
+    count = dissers.reduce(function(n, val) {
+        return n + (val === search);
+    }, 0);
+    }
+
+    return count;
+}
+
 
 /*****************************************************************************/
 /* mixtape: Lifecycle Hooks */
@@ -82,6 +117,8 @@ Template.mixtape.rendered = function() {
                 player.loadVideoById(fields.videoId, 1);
                 //close any alert.
                 sAlert.closeAll();
+                //remove all dislikes
+                Meteor.call('removeAllDissers');
                 //alert
                 App.helpers.setRoomAlert('Playing a new song that was added by ' + Videos.findOne({}).userName + "!");
             }
@@ -245,8 +282,10 @@ function removeVideoAndLoad() {
         App.helpers.displayAlertInfo('No users are logged in so we have to stop until someone signs in');
         return;
     }
+    //get the currently selected video.
     var roomVideoId = Rooms.findOne({}).videoId, video = Videos.findOne({});
 
+    //if there is no room id or there are no qued up videos in the common video play list.
     if ( !roomVideoId || !video){
         App.helpers.displayAlertInfo('Oh no! There are no more videos in the playlist. Can you SEARCH and add one?');
     }
@@ -255,9 +294,12 @@ function removeVideoAndLoad() {
         player.stopVideo();
     }else{
         adjustPlayhead();
+        //if not room owner stop here.
         return;
     }
-    //Make server side call to remove the current vidoo. on call back load the next one.
+
+    //Make server side call to remove the current vidoo and load the next one.
+    //Only Room owner will get here.
     Meteor.call('removeOneVideo', roomVideoId, function(error, result) {
         
         var video = Videos.findOne({});
@@ -265,6 +307,7 @@ function removeVideoAndLoad() {
             App.helpers.setRoomAlertInfo('Oh no! There are no more videos in the playlist. Can you SEARCH and add one?');
             return;
         }
+
         Meteor.call('updateRoomVideoID', video.videoId, function (error, result) {});
     });
 }
@@ -327,10 +370,10 @@ if (Meteor.isClient) {
 
             // just came online
             var username = "no name";
-            if (user.username)
+            if (user && user.username)
                 username = user.username;
 
-            if (user.profile.name)
+            if (user && user.profile.name)
                 username = user.profile.name;
 
            App.helpers.setRoomAlert(username + ' just left the party!', true)

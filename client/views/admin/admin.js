@@ -1,54 +1,50 @@
 Template.admin.onCreated(function() {
-    var self = this;
-    self.autorun(function() {
-        self.subscribe("rooms");
-    });
 
-    $('body').on('keydown', function(e) {
-        if (e.ctrlKey && e.keyCode == 86) {
-            $('#admin').toggle();
-        }
-    });
+    if (window.location.host === 'localhost:3000') {
+
+        var self = this;
+        self.autorun(function() {
+            self.subscribe("rooms");
+        });
+
+        $('body').on('keydown', function(e) {
+            if (e.ctrlKey && e.keyCode == 86) {
+                $('#admin').toggle();
+            }
+        });
+    }
 });
+
 
 
 Template.admin.events({
     'click .btn-becomeOwner': function(e, tmpl) {
-
         if (!Rooms.findOne({})) {
             return;
         }
 
-        var roomId = Rooms.findOne({})._id;
-        //console.log('admin is becoming room owner: roomId: ' + roomId)
-        Rooms.update({_id: roomId}, {
-            $set: {
-                ownerId: Meteor.user()._id
-            }
+        Meteor.call('becomeRoomOwner', function (error, result) {
+            console.log('you have become the room owner');
         });
     },
     'click .testUpdatePlayBack': function(e,tmpl)
     {
-        console.log('update to ',$('#test-playback-input').val());
+        //only people who are not the room owner will be affected.
         Meteor.call('updatePlayerCurrentTime', Number($('#test-playback-input').val()), function (error, result) {});
     },
 
     'click .btn-StopBeOwner': function(e, tmpl) {
-        var roomId = Rooms.findOne({})._id;
-        //console.log('stop: being owner',roomId);
-        Rooms.update({_id: roomId}, {$set: {ownerId: "555"}});
+        Meteor.call('updateRoomOwner', 0, function (error, result) {});
     },
 
     'click .btn-next': function(e, tmpl) {
-        console.log('Admin: get next video');
+        
         var id = Rooms.findOne({}).videoId;
-        console.log('remove video' + Session.get("isRoomOwner"), id);
         Meteor.call('removeOneVideo', id, function(error, result) {
             console.log('we removed the video');
-            var video = Videos.findOne({});
-            var videoId = video.videoId;
-            var roomId = Rooms.findOne({})._id;
-    //        Rooms.update({_id: roomId}, {$set: {videoId: videoId, slike: 3}});
+            // var video = Videos.findOne({});
+            // var videoId = video.videoId;
+            // var roomId = Rooms.findOne({})._id;
         });
     },
     'click #removeAllVideos': function(e, tmpl) {

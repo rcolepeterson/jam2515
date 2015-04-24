@@ -179,9 +179,12 @@ var init = function() {
         if (videoItems) {
             var length = videoItems.length;
             $.each(videoItems, function(i, data) {
-                localVideoCollection.insert({
-                    data: data
-                });
+                //don't add API deprecation video. TODO: update yo youtube 3.0 api.
+                if ( data.title !== 'https://youtube.com/devicesupport'){
+                    localVideoCollection.insert({
+                        data: data
+                    });
+                }
                 if ((length - 1) === i) {
                     tl.play();
                 }

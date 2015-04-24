@@ -1,4 +1,15 @@
+//http://stackoverflow.com/questions/11801278/accessing-meteor-production-database
+
 Meteor.methods({
+
+    becomeRoomOwner:function(){
+        var roomId = Rooms.findOne({})._id;
+        return Rooms.update({_id: roomId}, {
+            $set: {
+                ownerId: Meteor.user()._id
+            }
+        });
+    },
 
     removeAllVideos: function() {
         return Videos.remove({});
@@ -20,6 +31,7 @@ Meteor.methods({
         return Rooms.remove({});
     },
 
+    //only people who are not the room owner will be affected.
     updatePlayerCurrentTime: function(playerCurrentTime) {
         var roomId = Rooms.findOne({})._id;
         return Rooms.update({_id:roomId}, {$set: {playerCurrentTime: playerCurrentTime}});
@@ -31,8 +43,28 @@ Meteor.methods({
     },
 
     updateRoomLike: function(n) {
+        //console.log('user' , Meteor.user()._id);
         var roomId = Rooms.findOne({})._id;
+        if ( n < 0){
+            //record person who dissed.
+            if ( !Rooms.findOne({}).dissers ){
+                Rooms.update({_id: roomId}, {$set: {dissers: []}});
+            }
+
+            Rooms.update({_id: roomId}, {$push: {dissers: Meteor.user()._id}});
+
+        }   
+        
         return Rooms.update({_id: roomId}, {$inc: {like: n}});
+    },
+    //db.rooms.update({_id: '4vnTZvQDsNjGkExPQ'}, {$set: {alert: "test"}});
+    /**
+     * Emptys out the diss array. Fired when video changes.
+     * @return {[type]} [description]
+     */
+    removeAllDissers:function(){
+        var roomId = Rooms.findOne({})._id;
+        Rooms.update({_id: roomId}, {$set: {dissers: []}},{multi:true});
     },
 
     updateRoomVideoID: function(videoId) {

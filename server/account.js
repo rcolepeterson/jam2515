@@ -31,7 +31,14 @@ Accounts.onCreateUser(function(options, user) {
     return user;
 });
 
+
+
 Accounts.onLogin(function(options, user) {
+
+       
+       //Meteor.users.update({_id: CurrentUserId}, {$set: {downVoteCount: 3}});
+       //
+       
 
         //var hasPic = Meteor.users.find({_id: CurrentUserId}).profile.picture;
         // var rm = Rooms.findOne({});
