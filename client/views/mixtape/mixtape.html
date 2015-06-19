@@ -1,11 +1,8 @@
 <template name="mixtape">
-    <div class="container-fluid" id="home">
+    <div class="container" id="home">
         <div class="row">
             <!-- {{hateBtnDisable}}
             <br> -->
-            <div class="col-sm-1">
-                {{#each usersOnline}} {{>userInfo}} {{/each}}
-            </div>
             <div class="col-sm-5 videoPlayer info">
                 <div class='section-title videoTitle row'>
                     <div class="col-sm-9">
@@ -43,8 +40,13 @@
             <div class="col-sm-3 search">
                 {{>admin}} {{>Submit}}
             </div>
+             <div class="col-sm-1">
+                {{#each usersOnline}} {{>userInfo}} {{/each}}
+            </div>
         </div>
+
     </div>
+
 </template>
 
 

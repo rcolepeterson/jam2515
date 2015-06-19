@@ -1,6 +1,6 @@
 Template.admin.onCreated(function() {
 
-    if (window.location.host === 'localhost:3000') {
+    //if (window.location.host === 'localhost:3000') {
 
         var self = this;
         self.autorun(function() {
@@ -8,11 +8,11 @@ Template.admin.onCreated(function() {
         });
 
         $('body').on('keydown', function(e) {
-            if (e.ctrlKey && e.keyCode == 86) {
+            if (e.ctrlKey && e.keyCode == 69) {
                 $('#admin').toggle();
             }
         });
-    }
+   // }
 });
 
 

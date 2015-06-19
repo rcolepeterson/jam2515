@@ -82,7 +82,7 @@ function dissCount() {
 /* mixtape: Lifecycle Hooks */
 /*****************************************************************************/
 Template.mixtape.onCreated(function() {
-    var self = this, mytimer,player;
+    var self = this;
     var rm = Rooms.findOne({});
     if (!rm){
         //this should never run after 1 room is created.
@@ -109,10 +109,13 @@ Template.mixtape.onCreated(function() {
 });
 
 Template.mixtape.rendered = function() {
+   
+    var mytimer;
     var handleRoom = Rooms.find({}).observeChanges({
         
         changed: function(id, fields) {
             if (fields.videoId) {
+            
                 //video has changed. load the next one.
                 player.loadVideoById(fields.videoId, 1);
                 //close any alert.
@@ -187,6 +190,7 @@ Template.mixtape.rendered = function() {
     var room = Rooms.findOne({});
     if (room) {
        videoId = room.videoId;
+       console.log('video id',videoId);
     }
 
     if ( !Videos.findOne({}))
@@ -195,6 +199,9 @@ Template.mixtape.rendered = function() {
     }
 
     onYouTubeIframeAPIReady = function() {
+        
+        
+
         player = new YT.Player("player", {
             playerVars: {
                 'modestbranding': 1,
@@ -211,8 +218,7 @@ Template.mixtape.rendered = function() {
 
                     if (!Meteor.user() || !Session.get("isRoomOwner")) {
                         //if NOT logged in.... or not the room owner update playhead.
-                        adjustPlayhead();
-                        return
+                         adjustPlayhead();
                     }
 
                 },
@@ -232,7 +238,9 @@ Template.mixtape.rendered = function() {
                           }, 1000);        
                         } else {
                           
-                          clearTimeout(mytimer);
+                          if ( mytimer ){
+                                clearTimeout(mytimer);
+                            }
                           $('#myprogressBar').hide();
                         }
                     

@@ -1,4 +1,10 @@
 //http://stackoverflow.com/questions/11801278/accessing-meteor-production-database
+//
+//
+ YoutubeApi.authenticate({
+        type: 'key',
+        key: 'AIzaSyBU9A6sLsAGQRxuGhp6wqPQpEEvnl2XT78'
+    });
 
 Meteor.methods({
 
@@ -110,21 +116,23 @@ Meteor.methods({
      * @return {[type]}                 [description]
      */
     newVideo: function(userId, userName, userImage, youtubeData) {
+        
         Videos.insert({
                 created_at: new Date(),
                 userId: userId,
                 userName: userName,
                 userImage: userImage,
-                videoId: youtubeData.id,
-                videoThumb: youtubeData.thumbnail.hqDefault,
-                videoDesc: youtubeData.description,
-                videoTitle: youtubeData.title,
+                videoId: youtubeData.id.videoId,
+                videoThumb: youtubeData.snippet.thumbnails.medium.url,
+                videoDesc: youtubeData.snippet.description,
+                videoTitle: youtubeData.snippet.title,
                 like: 3
             },
             function(err, id) {
                 var roomId = Rooms.findOne()._id;
                 var count = Videos.find({}).count();
                 var insertedvideo = Videos.findOne({_id: id});
+               
                 //we just inserted the 1st video. update the Rooms obj which will start the player.
                 if (count === 1) {
                     Rooms.update({_id: roomId}, {$set: { videoId: insertedvideo.videoId, like:3}}, function(err) {});
@@ -139,5 +147,33 @@ Meteor.methods({
     setUserPic: function setUserPic(avatar) {
         return Meteor.users.update({_id: CurrentUserId}, {$set: {'profile.picture': avatar}
         });
-    }
+    },
+
+    ////search////
+   
+
+        searchVideo: function(keyword) {
+        //execution pause here until done() callback is called.
+            //https://github.com/meteorhacks/npm
+        var results = Meteor.sync(function(done) {
+          YoutubeApi.search.list({
+                part: "snippet",
+                type: "video",
+                maxResults: 10,
+                q: keyword,
+                videoDuration:"short"
+            }, function (err, data) {
+                
+            done(err, data);
+          });
+        });
+        if(results.error) {
+          throw new Meteor.Error(401, results.error.message);
+        }else{
+         
+          return results.result;
+        }
+      }
+    
+   
 });

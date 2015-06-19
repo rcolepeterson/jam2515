@@ -90,7 +90,7 @@ var init = function() {
     var tl = new TimelineLite({
             delay: 1,
             onStart: function() {
-                $input.focus();
+               // $input.focus();
                 if (localVideoCollection){
                     localVideoCollection.remove({});
                 }
@@ -154,12 +154,18 @@ var init = function() {
 
     //init API.
     function searchForVideo() {
-        $.youtubeAPI($input.val(), onSearchForVideoResults)
+       
+       // $.youtubeAPI($input.val(), onSearchForVideoResults)
+        Meteor.call('searchVideo', $input.val(), function(err, response) {
+            console.log('onSearchForVideoResults')
+            onSearchForVideoResults(response);
+        });
     }
 
     //Callback. Define items and continue sequence.
     function onSearchForVideoResults(result) {
-        videoItems = result.data.items;
+        
+        videoItems = result.items;
         tl.resume();
     }
 
@@ -176,8 +182,10 @@ var init = function() {
     //add ui to the DOM.
     function addResultsUI() {
 
+      
         if (videoItems) {
             var length = videoItems.length;
+            
             $.each(videoItems, function(i, data) {
                 //don't add API deprecation video. TODO: update yo youtube 3.0 api.
                 if ( data.title !== 'https://youtube.com/devicesupport'){

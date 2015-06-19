@@ -22,14 +22,16 @@
     </div>
 </template>
 
+
+
 <template name="youtubeItem">
     <div class="col-xs-12 thumb">
         <a class="thumbnail">
-            <img class="img-responsive" src="{{data.thumbnail.hqDefault}}">
+            <img class="img-responsive" src="{{data.snippet.thumbnails.medium.url}}">
         </a>
         <div class="userInfo search">
             <img class="img-responsive img-circle pull-left" src="{{authorImage}}" alt="">
-            <span>{{data.title}}</span>
+            <span>{{data.snippet.title}}</span>
         </div>
         <div class="social">
             <a href="#" data-id="{{_id}}" class="btn btn-primary submitFormBtn" role="button">
