@@ -205,7 +205,7 @@ Template.mixtape.rendered = function() {
         player = new YT.Player("player", {
             playerVars: {
                 'modestbranding': 1,
-                'controls': 0,
+                'controls': 1,
                 'autohide': 0,
                 'autoplay': 1,
                 'showinfo': 0
@@ -301,6 +301,10 @@ function removeVideoAndLoad() {
     if ( Session.get("isRoomOwner")){
         player.stopVideo();
     }else{
+        
+        if ( !video)
+            return;
+
         adjustPlayhead();
         //if not room owner stop here.
         return;
